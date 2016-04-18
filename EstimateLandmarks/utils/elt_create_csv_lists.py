@@ -35,7 +35,7 @@ with open(csv_path) as csv_file:
 			break
 
 		# construct image path
-		image_path = folder + image_row[0]
+		image_path = folder + image_row[0] + ".jpg"
 
 		# relevant landmarks to calculate eye position
 		l_indices = [27,68,28,69,29,70,30,71]
@@ -60,7 +60,7 @@ with open(csv_path) as csv_file:
 		rightEyeY *= 0.125
 
 		# construct csv string
-		csv_string = "\n" + image_path + ";48;64;" + str(leftEyeX) + ";" + str(leftEyeY) + ";" + str(rightEyeX) + ";" + str(rightEyeY)
+		csv_string = "\n" + image_path + ";480;640;" + str(leftEyeX) + ";" + str(leftEyeY) + ";" + str(rightEyeX) + ";" + str(rightEyeY)
 
 		# check whether person is a test person
 		if int(image_row[0][1:4]) in test_persons:
