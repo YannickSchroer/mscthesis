@@ -1,0 +1,183 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[ngerman,english]{babel}
+\usepackage{cite}
+\usepackage{bibgerm}
+\usepackage{fullpage}
+\usepackage[top=1.5cm,bottom=1.5cm,left=3.5cm,right=2.5cm,headsep=1.5cm,includeheadfoot]{geometry}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{eurosym}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage{pgfplots}
+\usepackage{pdflscape}
+\usepackage{acronym}
+\usepackage{blindtext}
+\usepackage{ifthen}
+\usepackage{setspace}
+\usepackage{cancel}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{comment}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage[parfill]{parskip}
+\usepackage{url}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhf{} % clear all
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{-- \thepage{} --}
+%\setlength{\headheight}{15pt}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\skip\footins}{0.7cm}
+
+\usetikzlibrary{graphs}
+\usetikzlibrary{positioning}
+
+\onehalfspacing
+\setlength\parindent{0pt}
+
+%\everymath{\displaystyle}
+
+\allowdisplaybreaks
+
+\definecolor{AI-BLUE}{rgb}{0,0.57,0.87}
+
+% Eigene Befehle
+\newcommand\q[1]{\glqq{}#1\grqq{}}
+\renewcommand\equiv{\Leftrightarrow}
+\newcommand\vertequal[2]{\underset{\underset{#2}{\parallel}}{#1}}
+\newcommand\cif{\text{if }}
+\newcommand\abs[1]{\left|#1\right|}
+\newcommand\norm[1]{\abs{\abs{#1}}}
+\newcommand\diff[1]{\text{ d#1}}
+\newcommand\av[1]{\left\langle#1\right\rangle}
+\newcommand\ev[1]{\mathbb{E}\left(#1\right)}
+\newcommand\br[1]{\left(#1\right)}
+\newcommand\ubr[2]{\underbrace{#1}_{#2}}
+\newcommand\quer[1]{\overline{#1}}
+\newcommand\setequal{\overset{!}{=}}
+\newcommand\dint{\displaystyle \int}
+\newcommand\dsum{\displaystyle \sum}
+\newcommand\dprod{\displaystyle \prod}
+\newcommand\closedInt[2]{\left[#1,#2\right]}
+\newcommand{\checkbox}{\Large \Square \normalsize \hspace{0.4cm}}
+
+\newcommand\myref[1]{\ref{#1} (S. \pageref{#1})}
+\newcommand\myrefcomma[1]{\ref{#1}, S. \pageref{#1}}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\setlength{\hoffset}{-0.5cm} % center title page
+
+\lstset{
+  basicstyle=\small,           % the size of the fonts that are used for the code
+  breaklines=true,             % sets automatic line breaking
+  captionpos=b,                % sets the caption-position to bottom
+  frame=single,                % adds a frame around the code
+  keepspaces=true,             % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  numbers=right,               % where to put the line-numbers; possible values are (none, left, right)
+  showspaces=false,            % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  stepnumber=1,                % the step between two line-numbers. If it's 1, each line will be numbered
+  tabsize=4,                   % sets default tabsize to 4 spaces
+  xleftmargin=0.14cm		   % sets left margin
+}
+
+\begin{comment}
+\begin{titlepage}
+    \begin{center}
+    \vphantom{0cm}
+    \LARGE \textbf{Report}\\
+    \vspace{3cm}
+    \normalsize
+    Study Project Report \\
+    in the Master Program of \textcolor{AI-BLUE}{[Applied Computer Science]}\\
+    at the Ruhr-University Bochum\\
+    in the Winter Term 2015/16\\
+    \vspace{4cm}
+    \huge \textbf{Deep Convolutional Networks} \\
+    \vspace{4cm}
+    \normalsize
+    \textbf{Project Participants}\\
+    B. Sc. Christian Andreas Mielers (108 011 204 956)\\
+    B. Sc. Phil Yannick Schrör (108 011 214 024)\\
+    \vspace{2cm}
+    \textbf{Project Supervisor:}\\
+    PD Dr. Rolf P. Würtz
+    \end{center}
+\end{titlepage}
+\end{comment}
+
+\begin{titlepage}
+    \begin{center}
+    \Large \textbf{Master's Thesis}\\
+    \vspace{3cm}
+    \normalsize
+    Master's Thesis\\
+    in the Program of Applied Computer Science\\
+    at the Ruhr-University Bochum\\
+    at the Institute for Neural Computation\\
+    in the Summer Term 2016\\
+    \vspace{3cm}
+    \LARGE \textbf{Fancy Title here} \\
+    \vspace{3cm}
+    \normalsize
+    \textbf{Author:}\\
+    Schrör, Phil Yannick\\
+    108 011 214 024\\
+    \vspace{2cm}
+    \textbf{To be handed in:}\\
+    30th of September 2016\\
+    \vspace{2cm}
+    \textbf{Supervisors:}\\
+    PD Dr. Rolf P. Würtz\\
+    M.Sc. Andreas Nilkens
+    \end{center}
+\end{titlepage}
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{2}
+
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+
+\begin{appendix}
+	\section{Implementation}
+\end{appendix}
+
+\addcontentsline{toc}{section}{References}
+\section*{References} %TODO Remove me
+%\bibliography{ref}{}
+%\bibliographystyle{alpha}
+http://www.scholarpedia.org/article/Elastic\_Bunch\_Graph\_Matching\\
+http://danielnouri.org/notes/2014/12/17/using-convolutional-neural-nets-to-detect-facial-keypoints-tutorial/\\
+http://www.milbo.org/muct/
+%TODO Put into .bib file
+
+\end{document}
+
+
+
+
+
+

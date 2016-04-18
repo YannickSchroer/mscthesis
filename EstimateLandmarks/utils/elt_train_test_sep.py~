@@ -1,0 +1,35 @@
+import os
+import random
+import numpy as np
+import math
+
+# variable definitions
+path = "data/MUCT_fixed/jpg"
+num_persons = 625
+test_proba = 0.2
+
+# determine test persons
+test_persons = random.sample(range(num_persons), math.floor(num_persons * test_proba))
+#print(test_persons)
+
+test_persons_list = []
+training_persons_list = []
+
+te = 0
+tr = 0
+
+# iterate over files
+for subdir, dirs, files in os.walk(path):
+	for f in files:
+		if int(f[1:4]) in test_persons:
+			te += 1
+			test_persons_list.append(f)
+		else:
+			tr += 1
+			training_persons_list.append(f)
+
+#print(te)
+#print(tr)
+#print(te / tr)
+
+print(test_persons_list)
