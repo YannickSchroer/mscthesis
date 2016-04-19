@@ -59,7 +59,7 @@ if args.store_status:
 
 	# weights
 	weight_filename = args.store_status + ".w"
-	movel.save_weights(weight_filename, overwrite=True)
+	model.save_weights(weight_filename, overwrite=True)
 
 	# training parameters
 	train_filename = args.store_status + ".t"
