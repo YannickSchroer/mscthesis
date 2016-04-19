@@ -28,7 +28,7 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 	for ltype, lspec in layout:
 		if ltype == 'conv2D':
 			layer = conv_layers.Convolution2D(**lspec)
-		elif ltype == 'maxpool2d':
+		elif ltype == 'maxpool2D':
 			layer = conv_layers.MaxPooling2D(**lspec)
 		elif ltype == 'flatten':
 			layer = core_layers.Flatten()
@@ -37,6 +37,7 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 		elif ltype == 'droupout':
 			layer = core_layers.Dropout(**lspec)
 		else:
+			print(ltype) # TODO REMOVE ME
 			raise NotImplementedError
 
 		model.add(layer)
