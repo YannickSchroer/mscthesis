@@ -37,7 +37,6 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 		elif ltype == 'droupout':
 			layer = core_layers.Dropout(**lspec)
 		else:
-			print(ltype) # TODO REMOVE ME
 			raise NotImplementedError
 
 		model.add(layer)
