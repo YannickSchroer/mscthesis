@@ -42,6 +42,6 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 		model.add(layer)
 
 	sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=momentum, nesterov=nesterov) # TODO Rethink this. Use RMSPROP?
-	model.compile(loss='mean_squared_error', optimizer=sgd)
+	model.compile(loss='mse', optimizer='rmsprop') # USE SGD AGAIN? ATTENTION! AN OPTIMIZER, WHICH IS NOT USED, IS RETURNED!
 
 	return model, sgd
