@@ -7,7 +7,7 @@ import time
 import random
 import csv
 
-def create_image_list(csv_path, predict=False):
+def create_image_list(csv_path, predict=False, d=None):
 	'''This method takes the path to a CSV file and saves all images in a list. If the parameter 'predict' is 'True', the labels will be ignored.'''
 	
 	# create list, which saves a dictionary for each image
@@ -21,6 +21,7 @@ def create_image_list(csv_path, predict=False):
 		# skip first line, which contains the headlines
 		next(csv_reader)
 
+		i = 0
 		# iterate over images
 		for image_row in csv_reader:
 			# append image to image list
@@ -28,6 +29,11 @@ def create_image_list(csv_path, predict=False):
 				image_list.append({'path': image_row[0]})
 			else:
 				image_list.append({'path': image_row[0], 'leftEyeX': image_row[3], 'leftEyeY': image_row[4], 'rightEyeX': image_row[5], 'rightEyeY': image_row[6]})
+			if d != None:
+				i += 1
+				if i == d:
+					break
+			
 
 	#shuffle images
 	random.shuffle(image_list)
@@ -37,21 +43,15 @@ def create_image_list(csv_path, predict=False):
 def read_data(csv_path, resolution, d=None, normalize=True, autocontrast=True, return_image_properties=False, predict=False):
 	'''In order to construct the data structures, which contain the training and test data, this method takes the path to a csv file, which saves information about the images. In addition, this method takes the 'resolution' to which the images are to be scaled, a parameter 'd' which determines how many images are to be processed, a boolean parameter 'normalize' which controls whether the images shall be normalized to the interval [0,1] and a boolean parameter 'autocontrast' which controls whether a PIL intern method shall be used to increase the contrast of the images. The boolean parameter 'return_image_properties' can be set to 'True' in order to return the image list created by the create_image_list method called within this method. If the flag 'predict' is set to 'True', the labels will be ignored'''
 	#create image list
-	image_list = create_image_list(csv_path, predict)
-
-	# check whether there is a limit for the images to be loaded
-	num_images = d if d is not None else len(image_list)
+	image_list = create_image_list(csv_path, predict, d)
 
 	# create empty arrays with appropriate size
-	X = np.empty((num_images, 3, resolution[0], resolution[1]), dtype=float)
+	X = np.empty((d, 3, resolution[0], resolution[1]), dtype=float)
 	if not predict:
-		y = np.empty((num_images, 4))
+		y = np.empty((d, 4))
 
 	# iterate over images
 	for idx, image in enumerate(image_list):
-		if idx >= num_images:
-			break
-
 		# open the image
 		im = pil.open(image['path'])
 
