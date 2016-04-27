@@ -1,7 +1,9 @@
 import sys
 import os
 
-#os.system("python src/train.py layouts/estimate_landmarks_tutorial.l data/MUCT_fixed/muct-landmarks/MUCT_TRAIN.csv -s weights/etl/01_zappa_rmsprop 1> outputs/etl/01_output.txt 2> outputs/etl/01_errors.txt")
-for i in range(21,41):
-	z = str(i - 1)
-	os.system("python src/train.py layouts/estimate_landmarks_tutorial.l data/MUCT_fixed/muct-landmarks/MUCT_TRAIN.csv -l weights/etl/" + z + "_zappa_rmsprop -s weights/etl/" + str(i) + "_zappa_rmsprop 1> outputs/etl/" + str(i) + "_output.txt 2> outputs/etl/" + str(i) + "_errors.txt")
+folder = "etl_eyes_48_64_lr001"
+os.system("python src/train.py layouts/estimate_landmarks_tutorial.l data/MUCT_fixed/muct-landmarks/MUCT_TRAIN.csv -s weights/" + folder + "/01_zappa_rmsprop 1> outputs/" + folder + "/01_output.txt 2> outputs/" + folder + "/01_errors.txt")
+for i in range(2,10):
+	num = str(i).zfill(2)
+	numLast = str(i - 1).zfill(2)
+	os.system("python src/train.py layouts/estimate_landmarks_tutorial.l data/MUCT_fixed/muct-landmarks/MUCT_TRAIN.csv -l weights/" + folder + "/" + numLast + "_zappa_rmsprop -s weights/" + folder + "/" + num + "_zappa_rmsprop 1> outputs/" + folder + "/" + num + "_output.txt 2> outputs/" + folder + "/" + num + "_errors.txt")
