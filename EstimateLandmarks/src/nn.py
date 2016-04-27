@@ -42,7 +42,7 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 		model.add(layer)
 
 	#TODO try other optimizer (SGD for example)
-	rmsprop = optimizers.RMSprop()
+	rmsprop = optimizers.RMSprop(lr=0.01)
 	model.compile(loss='mse', optimizer=rmsprop)
 
 	return model, rmsprop
