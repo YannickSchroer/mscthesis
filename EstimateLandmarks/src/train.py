@@ -47,11 +47,11 @@ if args.load_status:
 input_shape = layout[0][1]['input_shape']
 resolution = input_shape[1:]
 print('Loading data from {0} and rescaling it to {1}x{2}'.format(args.path, resolution[0], resolution[1]))
-x_train, y_train = dataset_io.read_data(args.path, resolution, args.datalimit)
+x_train, y_train = dataset_io.read_data(args.path, resolution, args.datalimit, normalize=False)
 
 # Train the model
 print('Training on {0} samples in batches of size {1} for {2} epochs'.format(x_train.shape[0], args.batchsize, args.epochs))
-model.fit(x_train, y_train, nb_epoch=args.epochs, batch_size=args.batchsize, verbose=args.verbosity)
+model.fit(x_train, y_train, nb_epoch=args.epochs, batch_size=args.batchsize, shuffle=True, verbose=args.verbosity)
 
 # Store status
 if args.store_status:
