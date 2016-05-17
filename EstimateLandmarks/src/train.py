@@ -4,11 +4,13 @@ import argparse
 import pickle
 
 import theano
-theano.config.openmp = True
+theano.config.openmp = False
 import keras.utils.np_utils as np_utils
+import numpy as np
 
 import nn
 import dataset_io
+import helpers
 
 # Parse arguments
 parser = argparse.ArgumentParser()
@@ -17,6 +19,7 @@ parser.add_argument('path', help='Path to csv file that lists input images')
 parser.add_argument('-e', '--epochs', help='Numper of epochs to train for [default 1]', type=int, default=1)
 parser.add_argument('-b', '--batchsize', help='Size of the batches to be learned on [default 16]', type=int, default=16)
 parser.add_argument('-d', '--datalimit', help='Maximum number of data points to read from PATH [if missing, read all]', type=int, default=None)
+parser.add_argument('-w', '--weightscale', help='The factor by which the weights after the initialization are scaled. Will be applied only if no weights are loaded.', default=2000)
 parser.add_argument('-l', '--load-status', help='Basename of the files to load status from')
 parser.add_argument('-s', '--store-status', help='Basename of the files to store status in')
 parser.add_argument('-v', '--verbosity', help='Set the verbosity level of keras (valid values: 0, 1, 2)', type=int, default=1)
@@ -42,6 +45,10 @@ if args.load_status:
 		optimizer.set_state(optimizer_state)
 	except IOError:
 		print('\t{0} not found: using initial parameters'.format(train_filename))
+else:
+	weights = model.get_weights()
+	helpers.mult_list(weights, args.weightscale)
+	model.set_weights(weights)
 
 # Load data
 input_shape = layout[0][1]['input_shape']
