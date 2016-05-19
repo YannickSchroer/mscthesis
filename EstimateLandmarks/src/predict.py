@@ -9,6 +9,7 @@ import argparse
 import theano
 theano.config.openmp = True
 import keras.utils.np_utils as np_utils
+import numpy as np
 
 import nn
 import dataset_io
@@ -40,24 +41,27 @@ model.load_weights('{0}.w'.format(args.weights))
 input_shape = layout[0][1]['input_shape']
 resolution = input_shape[1:]
 print('Loading data from {0} and rescaling it to {1}x{2}'.format(args.path, resolution[0], resolution[1]))
-x_pred, image_list = dataset_io.read_data(args.path, resolution, args.datalimit, predict=True, return_image_properties=True)
+x_pred, y_true, image_list = dataset_io.read_data(args.path, resolution, args.datalimit, labels=True, return_image_properties=True)
 
 # Predict
 print('Predict on {0} samples at resolution {1}x{2} in batches of size {3}'.format(x_pred.shape[0], resolution[0], resolution[1], args.batchsize))
 predictions = model.predict(x_pred, batch_size = args.batchsize, verbose=args.verbosity)
 
+# Concatenate true labels and predictions
+y_pred_and_true = np.concatenate((y_true, predictions), axis=1)
+
 # Save and/or display predictions
 if args.predsave != None and args.predshow:
 	# Save and show predictions
 	print('Save images with drawn predicted land marks to path \'{0}\'. The images will be displayed.'.format(args.predsave))
-	visualize.visualize_predictions(image_list, predictions, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
 elif args.predshow:
 	# Only show predictions
 	print('Display images with drawn predicted land marks.')
-	visualize.visualize_predictions(image_list, predictions, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
 elif args.predsave != None:
 	# Only save predictions
 	print('Save images with drawn predicted land marks to path \'{0}\'.'.format(args.predsave))
-	visualize.visualize_predictions(image_list, predictions, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
 
 print('DONE')
