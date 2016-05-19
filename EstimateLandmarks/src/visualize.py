@@ -4,7 +4,7 @@ import os
 import PIL.Image as pil
 import PIL.ImageDraw as pildraw
 
-def drawCross(im, pos, size):
+def drawCross(im, pos, size, color):
 	draw = pildraw.Draw(im)
 	
 	# line 1
@@ -16,8 +16,8 @@ def drawCross(im, pos, size):
 	topright= (pos[0] + size, pos[1] - size)
 
 	# draw lines
-	draw.line((topleft, bottomright), fill=(255,255,255))
-	draw.line((bottomleft, topright), fill=(255,255,255))
+	draw.line((topleft, bottomright), fill=color)
+	draw.line((bottomleft, topright), fill=color)
 
 	del draw
 
@@ -29,8 +29,11 @@ def visualize_predictions(image_list, predictions, crosssize=2, predsave = None,
 	for idx, image in enumerate(image_list):
 		im = pil.open(image['path'])
 
-		for i in range(int(predictions.shape[1] / 2)):
-			drawCross(im, (predictions[idx][2*i], predictions[idx][2*i + 1]), crosssize)
+		n = int(predictions.shape[1] / 2)
+		
+		for i in range(n):
+			color = int(i * 255 / (n - 1))
+			drawCross(im, (predictions[idx][2*i], predictions[idx][2*i + 1]), crosssize, (color, color, 255))
 
 		if predshow:
 			im.show()
