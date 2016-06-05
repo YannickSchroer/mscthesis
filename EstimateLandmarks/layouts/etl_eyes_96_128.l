@@ -68,7 +68,7 @@
   [
     "dense", 
     {
-      "activation": "relu", 
+      "activation": "sigmoid", 
       "init": "uniform", 
       "output_dim": 500
     }
@@ -76,7 +76,7 @@
   [
   	"dense", 
     {
-      "activation": "relu", 
+      "activation": "sigmoid", 
       "init": "uniform", 
       "output_dim": 500
     }

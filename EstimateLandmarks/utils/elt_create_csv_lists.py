@@ -12,7 +12,7 @@ num_persons = 625
 test_proba = 0.2
 
 # determine test persons
-test_persons = random.sample(range(num_persons), math.floor(num_persons * test_proba))
+test_persons = random.sample(range(num_persons), int(num_persons * test_proba))
 
 # initialize strings which contain the content of the CSV files
 csv_str_train = "Filename;Width;Height;LeftEyeX;LeftEyeY;RightEyeX;RightEyeY"
@@ -69,7 +69,7 @@ with open(csv_path) as csv_file:
 			csv_str_train += csv_string
 
 # save CSV files
-with open("data/MUCT_fixed/muct-landmarks/MUCT_TRAIN.csv", "w") as text_file:
+with open("data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_2.csv", "w") as text_file:
 	text_file.write(csv_str_train)
-with open("data/MUCT_fixed/muct-landmarks/MUCT_TEST.csv", "w") as text_file:
+with open("data/MUCT_fixed/muct-landmarks/MUCT_TEST_2.csv", "w") as text_file:
 	text_file.write(csv_str_test)

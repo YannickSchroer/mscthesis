@@ -38,7 +38,7 @@ def inter_ocular_distance_error(y_true, y_pred):
 	#exit()
 	#return K.mean(K.square(y_pred - y_true), axis=-1)
 
-def build_model_to_layout(layout, momentum=0.9, nesterov=False):
+def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0, nesterov=False):
 	'''This method contructs a model according to a given layout.'''
 	model = models.Sequential()
 
@@ -64,8 +64,8 @@ def build_model_to_layout(layout, momentum=0.9, nesterov=False):
 
 		model.add(layer)
 
-	#optimizer = optimizers.RMSprop(lr=0.001)
-	optimizer = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.0, nesterov=True)
+	#optimizer = optimizers.RMSprop(lr=learningrate)
+	optimizer = optimizers.SGD(lr=learningrate, momentum=0.2, decay=decay, nesterov=True)
 	model.compile(loss='mse', optimizer=optimizer)
 	#model.compile(loss=inter_ocular_distance_error, optimizer=optimizer)
 
