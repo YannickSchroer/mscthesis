@@ -6,7 +6,6 @@ import nn
 import dataset_io
 import helpers
 import custom_callbacks
-import stop_early
 import visualize
 
 weightscales = ["glorot_normal"]
