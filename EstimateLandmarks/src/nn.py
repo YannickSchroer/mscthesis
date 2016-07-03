@@ -65,7 +65,7 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 		model.add(layer)
 
 	#optimizer = optimizers.RMSprop(lr=learningrate)
-	optimizer = optimizers.SGD(lr=learningrate, momentum=0.2, decay=decay, nesterov=True)
+	optimizer = optimizers.SGD(lr=learningrate, momentum=momentum, decay=decay, nesterov=True)
 	model.compile(loss='mse', optimizer=optimizer)
 	#model.compile(loss=inter_ocular_distance_error, optimizer=optimizer)
 
