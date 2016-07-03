@@ -15,7 +15,7 @@ momentums = [0.1, 0.3, 0.5, 0.7, 0.9]
 loss_matrix = np.zeros((len(momentums), len(learningrates)))
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-layout_path = "layouts/etl_kaggle_480_640_tutorial_glorot_normal_gray.l"
+layout_path = "layouts/etl_kaggle_96_128_tutorial_glorot_normal_gray.l"
 batchsize = 4
 epochs = 25
 normalize = 2
@@ -53,9 +53,12 @@ for m_idx, m in enumerate(momentums):
 		print("Learning rate: ", l)
 		#print("weightscale: ", w)
 		print("momentum: ", m)
-		model, optimizer = nn.build_model_to_layout(layout, learningrate=l, momentum=m, decay=0.0)
+		model, optimizer = nn.build_model_to_layout(layout, learningrate=l, momentum=m, decay=0.0) #change
 
-		callbacks = [custom_callbacks.StopEarly(3), custom_callbacks.Distortions(x_train, y_train, x_train.shape[0], (1.,1.))]
+		if normalize_output:
+			callbacks = [custom_callbacks.StopEarly(3), custom_callbacks.Distortions(x_train, y_train, x_train.shape[0], (float(original_resolution[0]) / float(max_dim), float(original_resolution[1]) / float(max_dim)))]
+		else:
+			callbacks = [custom_callbacks.StopEarly(3), custom_callbacks.Distortions(x_train, y_train, x_train.shape[0], original_resolution)]
 		#loss_callback = custom_callbacks.RecordLoss(args.epochs, nb_labels, x_train, y_train, resolution, model, args.grayscale)
 		#callbacks.append(loss_callback)
 		#loss_callbacks.append(loss_callback)
@@ -71,7 +74,7 @@ for m_idx, m in enumerate(momentums):
 
 		loss = model.evaluate(x_train, y_train, batch_size=batchsize, verbose=False)
 		print(loss)
-		loss_matrix[w_idx, l_idx] = loss
+		loss_matrix[m_idx, l_idx] = loss #change
 
 		predictions = model.predict(x_train, batch_size = batchsize, verbose=False)
 		print(np.round(predictions - y_train, 3))
@@ -103,5 +106,5 @@ for i in range(len(momentums)):
 
 print(loss_matrix)
 
-with open("weights/loss_matrix_sgd_kaggle_reduced_normalized_labels_finer_distortions_momentum_05_glorot_normal.dat", "w") as loss_file:
+with open("weights/loss_matrix_momentum_learning_rate_zappa.dat", "w") as loss_file:
 		loss_file.write(loss_string)
