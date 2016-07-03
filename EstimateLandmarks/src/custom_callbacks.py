@@ -49,9 +49,6 @@ class StopEarly(keras.callbacks.Callback):
 		if (logs.get('loss') < self.limit) == False:
 			self.model.stop_training = True
 			print("\nStopping early because loss got over " + str(self.limit))
-		elif self.loss_callback != None and epoch > 5 and self.loss_callback.losses[epoch-1] == self.loss_callback.losses[epoch-2] == self.loss_callback.losses[epoch-3] == self.loss_callback.losses[epoch-4]:
-			self.model.stop_training = True
-			print("\nStopping early because the loss did not improve for 4 epochs")
 
 class Distortions(keras.callbacks.Callback):
 	'''This class is a callback, which transforms the input images (and labels) before each epoch.'''
