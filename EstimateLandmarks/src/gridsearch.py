@@ -15,7 +15,7 @@ momentums = [0.1, 0.3, 0.5, 0.7, 0.9]
 loss_matrix = np.zeros((len(momentums), len(learningrates)))
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-layout_path = "layouts/etl_kaggle_96_128_tutorial_glorot_normal_gray.l"
+layout_path = "layouts/etl_kaggle_480_640_tutorial_glorot_normal_gray.l"
 batchsize = 4
 epochs = 25
 normalize = 2
