@@ -45,7 +45,7 @@ x_pred, y_true, image_list = dataset_io.read_data(args.path, resolution, args.da
 
 # Predict
 print('Predict on {0} samples at resolution {1}x{2} in batches of size {3}'.format(x_pred.shape[0], resolution[0], resolution[1], args.batchsize))
-predictions = model.predict(x_pred, batch_size = args.batchsize, verbose=args.verbosity)
+predictions = model.predict(x_pred, batch_size = args.batchsize, verbose=args.verbosity) * 640
 
 # Concatenate true labels and predictions
 y_pred_and_true = np.concatenate((y_true, predictions), axis=1)
@@ -54,14 +54,14 @@ y_pred_and_true = np.concatenate((y_true, predictions), axis=1)
 if args.predsave != None and args.predshow:
 	# Save and show predictions
 	print('Save images with drawn predicted land marks to path \'{0}\'. The images will be displayed.'.format(args.predsave))
-	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, predictions, y_true, args.crosssize, args.predsave, args.predshow)
 elif args.predshow:
 	# Only show predictions
 	print('Display images with drawn predicted land marks.')
-	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, predictions, y_true, args.crosssize, args.predsave, args.predshow)
 elif args.predsave != None:
 	# Only save predictions
 	print('Save images with drawn predicted land marks to path \'{0}\'.'.format(args.predsave))
-	visualize.visualize_predictions(image_list, y_pred_and_true, args.crosssize, args.predsave, args.predshow)
+	visualize.visualize_predictions(image_list, predictions, y_true, args.crosssize, args.predsave, args.predshow)
 
 print('DONE')

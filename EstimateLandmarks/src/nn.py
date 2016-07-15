@@ -57,7 +57,7 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 			layer = core_layers.Flatten()
 		elif ltype == 'dense':
 			layer = core_layers.Dense(**lspec)
-		elif ltype == 'droupout':
+		elif ltype == 'dropout':
 			layer = core_layers.Dropout(**lspec)
 		else:
 			raise NotImplementedError

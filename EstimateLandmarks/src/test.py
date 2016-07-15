@@ -14,6 +14,7 @@ import keras.utils.np_utils as np_utils
 
 import nn
 import dataset_io
+import visualize
 
 # Parse parameters
 parser = argparse.ArgumentParser()
@@ -38,10 +39,10 @@ print('Loading data from {0} and rescaling it to {1}x{2}'.format(args.path, reso
 x_test, y_test = dataset_io.read_data(args.path, resolution, args.datalimit)
 
 # normalize labels
-if False:
-	y_test[:,0] /= 480
+if True:
+	y_test[:,0] /= 640#480
 	y_test[:,1] /= 640
-	y_test[:,2] /= 480
+	y_test[:,2] /= 640#480
 	y_test[:,3] /= 640
 
 # create list with the pathes to all weights
@@ -70,6 +71,8 @@ for weights in weight_list:
 	print('Testing on {0} samples at resolution {1}x{2} in batches of size {3}'.format(x_test.shape[0], resolution[0], resolution[1], args.batchsize))
 	score = model.evaluate(x_test, y_test, batch_size = args.batchsize, verbose=args.verbosity)
 	print('Test score:', score)
+
+
 
 if args.savepath:
 	f = open(args.savepath, "w")
