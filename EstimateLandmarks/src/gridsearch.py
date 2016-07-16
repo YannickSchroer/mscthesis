@@ -19,7 +19,7 @@ test_loss_matrix = np.zeros((len(momentums), len(learningrates)))
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 test_data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
-layout_path = "layouts/etl_kaggle_96_128_tutorial_glorot_normal.l"
+layout_path = "layouts/etl_kaggle_96_128_tutorial_glorot_normal_dropout.l"
 batchsize = 4
 epochs = 150
 normalize = 2
@@ -138,5 +138,5 @@ for lc in loss_callbacks:
 print(loss_matrix)
 print(test_loss_matrix)
 
-with open("weights/gray_vs_color__color.dat", "w") as loss_file:
+with open("results/gray_vs_color__color.dat", "w") as loss_file:
 		loss_file.write(loss_string)
