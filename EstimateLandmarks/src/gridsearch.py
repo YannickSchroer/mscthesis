@@ -20,6 +20,7 @@ test_loss_matrix = np.zeros((len(momentums), len(learningrates)))
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 test_data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
 layout_path = "layouts/etl_kaggle_96_128_tutorial_glorot_normal_dropout.l"
+weight_store_path = "weights/gridsearch_color_dropout_500/cd_500"
 batchsize = 4
 epochs = 500
 normalize = 2
@@ -88,6 +89,10 @@ for m_idx, m in enumerate(momentums):
 
 		predictions = model.predict(x_train, batch_size = batchsize, verbose=False)
 		print(np.round(predictions - y_train, 3))
+
+		# Store status
+		dataset_io.store_status(model, optimizer, weight_store_path + "_l" + str(l) + "_m" + str(m))
+
 		continue
 
 loss_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
