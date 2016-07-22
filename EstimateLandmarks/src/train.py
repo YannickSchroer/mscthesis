@@ -37,7 +37,7 @@ args = parser.parse_args()
 # Load model
 print('Loading model from {0}'.format(args.layout))
 layout = nn.load_layout(args.layout)
-model, optimizer = nn.build_model_to_layout(layout, args.learningrate, momentum=0.5, decay=0.001)
+model, optimizer = nn.build_model_to_layout(layout, args.learningrate, momentum=0.0, decay=0.001)
 
 # Get input shape and resolution
 input_shape = layout[0][1]['input_shape']
