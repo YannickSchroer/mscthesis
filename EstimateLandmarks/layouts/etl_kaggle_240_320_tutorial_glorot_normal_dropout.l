@@ -6,8 +6,8 @@
       "init": "glorot_normal", 
       "input_shape": [
         3, 
-        96, 
-        128
+        240, 
+        320
       ],
       "nb_filter": 32, 
       "nb_col": 3, 
