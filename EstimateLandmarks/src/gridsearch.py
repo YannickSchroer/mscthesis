@@ -11,7 +11,7 @@ import visualize
 loss_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 weightscales = ["glorot_normal"]
-learningrates = [0.05]
+learningrates = [0.03,0.05]
 momentums = [0]
 
 loss_matrix = np.zeros((len(momentums), len(learningrates)))
@@ -20,9 +20,9 @@ test_loss_matrix = np.zeros((len(momentums), len(learningrates)))
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 test_data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
 layout_path = "layouts/etl_kaggle_240_320_tutorial_glorot_normal_dropout.l"
-weight_store_path = "weights/240_320_color_dropout/cd_2000"
+weight_store_path = "weights/240_320_color_dropout/cd_3000"
 batchsize = 4
-epochs = 20
+epochs = 3000
 normalize = 2
 normalize_output = True
 grayscale = False
@@ -143,5 +143,5 @@ for lc in loss_callbacks:
 print(loss_matrix)
 print(test_loss_matrix)
 
-with open("results/240_320_color_dropout_2000.dat", "w") as loss_file:
+with open("results/240_320_color_dropout_3000.dat", "w") as loss_file:
 		loss_file.write(loss_string)
