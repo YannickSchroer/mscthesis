@@ -110,10 +110,6 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		merge_real_imag_model = models.Sequential()
 		merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode="sumsqrt"))
 
-		#TODO Wurzel ziehen
-		
-		#TODO Zweiter Convolutional Layer
-
 		#TODO Atan2 Layer
 
 		# append the model to the model list
@@ -139,7 +135,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	merged_model = models.Sequential()
 	merged_model.add(core_layers.Merge(first_layer_models, concat_axis=1, mode='concat'))
 
-	# add additional convolutional layer
+	# add additional convolutional layers
+	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
 	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
 
 	# flatten model
