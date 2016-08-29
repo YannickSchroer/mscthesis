@@ -95,6 +95,9 @@ print loss_callback.loss_history
 if args.store_histogram:
 	vs.loss_histogram(losses, args.store_histogram)
 
+predictions = model.predict(x_train, 4)
+visualize.visualize_predictions(image_list, predictions, true_labels=y_train, crosssize=5, predsave = "visualizations/240_320_color_dropout_3000_train", predshow = False, color_pred = (255,255,255), color_true = (0,0,0))
+
 # Store status
 if args.store_status:
 	dataset_io.store_status(model, optimizer, args.store_status)

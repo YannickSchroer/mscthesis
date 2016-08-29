@@ -73,7 +73,6 @@ for weights in weight_list:
 	print('Test score:', score)
 
 
-
 if args.savepath:
 	f = open(args.savepath, "w")
 	for s in score_list:

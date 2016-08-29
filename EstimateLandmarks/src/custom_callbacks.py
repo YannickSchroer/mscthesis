@@ -38,6 +38,25 @@ class RecordLoss(keras.callbacks.Callback):
 
 	def on_epoch_end(self, epoch, logs={}):
 		self.loss_history[epoch], self.latest_losses = self.calculate_loss()
+
+class RecordLossGabor(keras.callbacks.Callback):
+	'''This class is a callback, which computes and saves the loss after each epoch'''
+	def __init__(self, nb_epochs, nb_labels, data, labels, resolution, model):
+		self.nb_epochs = nb_epochs
+		self.nb_labels = nb_labels
+		self.data = data
+		self.labels = labels
+		self.resolution = resolution
+		self.model = model
+		self.loss_history = np.empty((self.nb_epochs))
+
+	def calculate_loss(self):
+		'''This method calculates the mean loss and the individual losses.'''
+		#print('\nCalculating loss ...')
+		return self.model.evaluate(self.data, self.labels, 1, verbose=False)
+
+	def on_epoch_end(self, epoch, logs={}):
+		self.loss_history[epoch] = self.calculate_loss()
 		
 class StopEarly(keras.callbacks.Callback):
 	'''This class is a callback, which ends training, if the loss reaches a certain threshold.'''

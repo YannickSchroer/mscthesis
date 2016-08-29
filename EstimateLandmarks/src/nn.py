@@ -3,11 +3,13 @@
 import argparse
 import json
 
+import numpy as np
 import theano
 theano.config.openmp = True
 import keras.models as models
 import keras.layers.core as core_layers
 import keras.layers.convolutional as conv_layers
+import custom_layers
 import keras.optimizers as optimizers
 import keras.backend as K
 
@@ -70,3 +72,87 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 	#model.compile(loss=inter_ocular_distance_error, optimizer=optimizer)
 
 	return model, optimizer
+
+def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01, momentum=0., decay = 0.0, nesterov=False):
+	'''This method constructs a model with gabor convolutional layers and subsequent fully connected layers'''
+
+	# initialize lists to save the single models
+	first_layer_models = []
+
+	# iterate over the lists containg all the filters for one value of m
+	for m_filters in gabor_filters:
+		# get filter shape
+		filter_shape = m_filters[0].shape
+		nb_row = filter_shape[0]
+		nb_col = filter_shape[1]
+
+		# initalize lists, which save all real and imaginary parts for the corresponding m
+		real_filters = np.empty((len(m_filters), 3, filter_shape[0], filter_shape[1]))
+		imag_filters = np.empty((len(m_filters), 3, filter_shape[0], filter_shape[1]))
+
+		# iterate over all L filters for corresponding m
+		for idx, fil in enumerate(m_filters):
+			# add real and imaginary parts to the corresponding list
+			real_filters[idx,:] = np.real(fil)
+			imag_filters[idx,:] = np.imag(fil)
+
+		# create real and imaginary model
+		real_model = models.Sequential()
+		imag_model = models.Sequential()
+
+		# add convolution layers and square results
+		real_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
+		#real_model.add(core_layers.Lambda(lambda x: x ** 2))
+		imag_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
+		#imag_model.add(core_layers.Lambda(lambda x: x ** 2))
+
+		# merge real and imaginary models, sum up their outputs
+		merge_real_imag_model = models.Sequential()
+		merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode="sumsqrt"))
+
+		#TODO Wurzel ziehen
+		
+		#TODO Zweiter Convolutional Layer
+
+		#TODO Atan2 Layer
+
+		# append the model to the model list
+		first_layer_models.append(merge_real_imag_model)
+
+	# find maximal output dimensions
+	max_output_x = 0
+	max_output_y = 0
+	for m in first_layer_models:
+		if m.output_shape[2] > max_output_x:
+			max_output_x = m.output_shape[2]
+		if m.output_shape[3] > max_output_y:
+			max_output_y = m.output_shape[3]
+
+	# add zero padding layers where the output dimension is smaller than the maximal output dimension
+	for m in first_layer_models:
+		if m.output_shape[2] < max_output_x or m.output_shape[3] < max_output_y:
+			x_pad = (max_output_x - m.output_shape[2]) / 2
+			y_pad = (max_output_y - m.output_shape[3]) / 2
+			m.add(conv_layers.ZeroPadding2D(padding=(x_pad,y_pad)))
+
+	# merge single models
+	merged_model = models.Sequential()
+	merged_model.add(core_layers.Merge(first_layer_models, concat_axis=1, mode='concat'))
+
+	# add additional convolutional layer
+	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
+
+	# flatten model
+	merged_model.add(core_layers.Flatten())
+
+	# add two fully connected layers
+	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
+	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
+
+	# add output layer
+	merged_model.add(core_layers.Dense(activation="linear", init="glorot_normal", output_dim=30))
+
+	optimizer = optimizers.SGD(lr=learningrate, momentum=momentum, decay=decay, nesterov=True)
+	merged_model.compile(loss='mse', optimizer=optimizer)
+
+	return merged_model, optimizer
