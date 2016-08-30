@@ -137,7 +137,7 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 
 	# add additional convolutional layers
 	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
-	merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2))
+	merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
 
 	# flatten model
