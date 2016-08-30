@@ -11,7 +11,7 @@ result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 gabor_file = "data/gabor/gabor_filters.dat"
-weight_store_path = "weights/gabor_lr0.1_sqrt_2conv"
+weight_store_path = "weights/gabor_lr0.1_sqrt_2conv_mp"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
@@ -71,7 +71,7 @@ result_string += "epochs: " + str(epochs) + "\n"
 result_string += "grayscale: " + str(grayscale) + "\n"
 result_string += "weightscales: "
 result_string += "glorot_normal\n"
-result_string += "learningrate: " + str(learningrate)
+result_string += "learningrate: " + str(learningrate) + "\n"
 result_string += "decay: " + str(decay)
 
 result_string += "\n\n"
@@ -82,5 +82,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt_2conv/results_200.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_sqrt_2conv_mp/results_200.dat", "w") as loss_file:
 		loss_file.write(result_string)
