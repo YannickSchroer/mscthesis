@@ -12,6 +12,7 @@ import keras.layers.convolutional as conv_layers
 import custom_layers
 import keras.optimizers as optimizers
 import keras.backend as K
+import theano as T
 
 from scaled_tanh import scaled_tanh
 
@@ -108,7 +109,7 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 
 		# merge real and imaginary models, sum up their outputs
 		merge_real_imag_model = models.Sequential()
-		merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode="sumsqrt"))
+		merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='sumsqrt'))
 
 		#TODO Atan2 Layer
 

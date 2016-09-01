@@ -32,7 +32,7 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay)
 
 # Load status
-#dataset_io.load_status(model, optimizer, weight_store_path + "/250")
+dataset_io.load_status(model, optimizer, weight_store_path + "/200")
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
 if normalize == 1:
@@ -64,7 +64,7 @@ callbacks.append(loss_callback)
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
 # save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/200")
+dataset_io.store_status(model, optimizer, weight_store_path + "/400")
 
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
@@ -82,5 +82,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt_2conv_mp/results_200.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_sqrt_2conv_mp/results_400.dat", "w") as loss_file:
 		loss_file.write(result_string)
