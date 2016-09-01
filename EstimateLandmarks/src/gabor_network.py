@@ -11,7 +11,7 @@ result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 gabor_file = "data/gabor/gabor_filters.dat"
-weight_store_path = "weights/gabor_lr0.1_sqrt"
+weight_store_path = "weights/gabor_lr0.1_sqrt_2conv_mp"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
@@ -82,5 +82,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt/results_400.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_sqrt_2conv_mp/results_400.dat", "w") as loss_file:
 		loss_file.write(result_string)
