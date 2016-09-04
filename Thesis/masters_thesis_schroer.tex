@@ -167,7 +167,7 @@ Testing the different networks has shown that \dots%TODO Write more!
 
 \newpage
 
-\section{Background}
+\section{Neural Networks}
 
 \subsection{Artificial Neural Networks}
 
@@ -177,7 +177,7 @@ Testing the different networks has shown that \dots%TODO Write more!
 
 \section{Data}
 
-Training and testing a \ac{CNN} requires an appropriate data set with a sufficiently large number of training and test examples. Daniel Nouri uses the data set from the \emph{Facial Keypoints Detection} challenge on the machine learning website Kaggle\footnote{cf. \cite{kaggle}} in his inspiring tutorial \emph{Using convolutional neural nets to detect facial keypoints}\footnote{cf. \cite{nouri-tutorial}}. This dataset provides a reasonable amount of landmarks, however, it does not provide all landmarks for all faces. To avoid too much data organisation overhead it was used the \ac{MUCT} dataset\footnote{cf. \cite{muct}} instead, which exhibits a simpler structure and provides not only all kaggle landmarks but even more for each depicted person.
+Training and testing a \ac{CNN} requires an appropriate data set with a sufficiently large number of training and test examples. Daniel Nouri uses the data set from the \emph{Facial Keypoints Detection} challenge on the machine learning website Kaggle\footnote{cf. \cite{kaggle}} in his inspiring tutorial \emph{Using convolutional neural nets to detect facial keypoints}\footnote{cf. \cite{nouri-tutorial}}. This dataset provides a reasonable amount of landmarks, however, it does not provide all landmarks for all faces. To avoid too much data organisation overhead it was used the \ac{MUCT} data set\footnote{cf. \cite{muct}} instead, which exhibits a simpler structure and provides not only all kaggle landmarks but even more for each depicted person.
 
 \subsection{Kaggle}
 
@@ -210,7 +210,7 @@ As already mentioned, not all landmarks exist for all images. In fact, for almos
 
 \subsection{MUCT Face Database}
 
-The \acf{MUCT} face database was created by Stephen Millborrow, John Morkel and Fred Nicolls in December 2008 at the University Of Cape Town.\footnote{cf. \cite{muct}} It contains 3755 faces with 76 manually set landmarks and, as shown in figure \ref{fig:muctfaces}, provides a broad spectrum of faces from people of different age and ethnicity. Furthermore, many different lighting settings have been used in order to increase the diversity of the pictures.
+The \acf{MUCT} face database was created by Stephen Millborrow, John Morkel and Fred Nicolls in December 2008 at the University Of Cape Town.\footnote{cf. \cite{muct}} It contains 3755 faces with 76 manually set landmarks, including all Kaggle landmarks presented above. As shown in figure \ref{fig:muctfaces}, it provides a broad spectrum of faces from people of different age, gender and ethnicity. Furthermore, many different lighting settings have been used in order to increase the diversity of the pictures.
 
 \begin{figure}[htbp]
 	\centering
@@ -219,27 +219,24 @@ The \acf{MUCT} face database was created by Stephen Millborrow, John Morkel and 
 	\label{fig:muctfaces}
 \end{figure}
 
-Since images given in real applications are often not taken from a perfectly frontal perspective on the face, the creators of the data set provide images from five different angles.
+Since images given in real applications are often not taken from a perfectly frontal perspective on the face, the creators of the data set provide images taken from five different angles, which are shown in figure \ref{fig:muctangles}. Disregarding some software induced delays, all five images were taken simultaneously in order to guarantee that the person does not move between two photo shots. Whereas two of the images show the right side of the person's face, images of the left side were not taken, because approximations of these images can be easily obtained by mirroring.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\textwidth]{muct_perspectives.png}
+	\includegraphics[width=0.77\textwidth]{muct_perspectives.png}
 	\caption[MUCT Different Perspectives]{MUCT Different Perspectives\footnotemark}
-	\label{fig:muctfaces}
+	\label{fig:muctangles}
 \end{figure}
+\footnotetext{Both illustrations were taken from the \cite{muct} paper}
 
-\footnotetext{Illustrations taken from the \cite{muct} paper}
-
-% resolution
-% camera perspectives
-% dismissing of perspectives b and c
-
+There is only one real disadvantage of the \ac{MUCT} data set compared to the Kaggle data set, i.e. the smaller total number of images -- 3755 on \ac{MUCT} instead of 8832 on Kaggle. In fact, using the \ac{MUCT} data set has a lot of advantages. The first one is the larger resolution: the \ac{MUCT} images are made available in a resolution of $480 \times 640$ pixels, whereas the Kaggle images have a resolution of only $96 \times 96$ pixels. The lager resolution allows for a model, which works more precisely with regard to rather subtle or fine landmarks. Another advantage is the accessibility of colour information, which may be useful to produce a reasonable predicition at the cost of a longer program execution time.\\
+Another expedient property of the \ac{MUCT} data set is its well-structuredness. The file names contain all relevant information about the corresponding image, because all of them follow the pattern: \texttt{i\{personID\}\{lighting set\}\{camera view\}-\{gender\}\{(no) glasses\}}. The first \texttt{i}mage of the data set has the file name \texttt{i000qa-fn.jpg}, so the person has the ID \texttt{000}, lighting setting \texttt{q} was used, the photo was shot from angle \texttt{a}, the person is \texttt{f}emale and does \texttt{n}ot wear glasses.\\
+This naming system is highly valuable, because selecting only a certain subset of the images is simplified a lot, because it is sufficient to check their filename for a specific character at the corresponding position. This is important, because also the \ac{MUCT} data set does not provide all landmarks for all images, but it does so in a much more organized way. It occurs only for the camera views \texttt{b} and \texttt{c} that some landmarks may not be given, because some of them are not visible due to the perspective on the face. For example the end of the person's left eyebrow ist often not visible.\\
+Since \acp{ANN} usually require a fixed input size and a fixed output size, all images taken from camera view \texttt{b} and \texttt{c} were omitted and not used at all. For that reason the total number of images decreases to 2257, which were divided randomly in 1752 training images and 502 test images. In order to increase the generalization capability of the network, no person was assigned to both training set and test set. Hence, the test images presented to the network always showed persons unknown to the network.
 
 \newpage
 
-\section{Network}
-
-\subsection{Convolutional Neural Networks}
+\section{Network Architectures}
 
 \subsection{Thoroughly trained CNN}
 
@@ -251,9 +248,24 @@ Since images given in real applications are often not taken from a perfectly fro
 
 \subsection{Thoroughly trained CNN}
 
+\begin{itemize}
+\item Gridsearch
+\item Momentum (bad!?)
+\item Decay (bad, too!?)
+\end{itemize}
+
 \subsection{Using Gabor Wavelets}
 
+\begin{itemize}
+\item Small resolution, absolute value
+\item Small resolution, arctan2
+\item Larger resolution, absolute value
+\item Larger resolution, arctan2
+\end{itemize}
+
 \subsection{Confrontation of both Approaches}
+
+Gabor approach probably better
 
 \newpage
 
@@ -300,7 +312,7 @@ Ich versichere, dass ich die Arbeit selbstständig verfasst und keine anderen al
 I declare that the topic of this thesis is not identical to the topic of another thesis written by me for another examination. Furthermore I declare that I did not submit this thesis to another university to obtain an academic degree.
 
 \vspace{0.8cm}
-I assure that I composed this thesis thoroughly on my own without using other sources than the denoted ones. Those fragments of this thesis, which are taken literally or figuratively from other works, are indicated by citing their origin. This also applies to the provided drawings, sketchins, illustrations and suchlike.
+I assure that I composed this thesis thoroughly on my own without using other sources than the denoted ones. Those fragments of this thesis, which are taken literally or figuratively from other works, are indicated by citing their origin. This also applies to the provided drawings, sketches, illustrations and suchlike.
 
 \vspace{1.5cm}
 \rule[0.05cm]{5cm}{0.5pt} \hspace{4.5cm} \rule[0.05cm]{5cm}{0.5pt}\\
