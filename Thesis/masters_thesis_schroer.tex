@@ -110,7 +110,7 @@
     at the Institute for Neural Computation\\
     in the Summer Term 2016\\
     \vspace{3cm}
-    \LARGE \textbf{Fancy Title here} \\
+    \LARGE \textbf{A Deep Convolutional Network for Facial Landmark Estimation} \\
     \vspace{3cm}
     \normalsize
     \textbf{Author:}\\
@@ -118,7 +118,7 @@
     108 011 214 024\\
     \vspace{2cm}
     \textbf{To be handed in:}\\
-    30th of September 2016\\
+    31st of October 2016\\
     \vspace{2cm}
     \textbf{Supervisors:}\\
     PD Dr. Rolf P. Würtz\\
@@ -133,23 +133,178 @@
 \tableofcontents
 
 \newpage
+
+\addcontentsline{toc}{section}{List of Acronyms}
+
+\section*{List of Acronyms}
+\markboth{LIST OF ACRONYMS}{}
+
+%\acrodefplural{KNN}[KNN]{Künstliche Neuronale Netzwerke}
+
+\begin{acronym}
+\acro{ANN}{Artificial Neural Network}
+\acro{CNN}{Convolutional Neural Network}
+\acro{MUCT}{Milborrow / University of Cape Town} (Image data set)
+\acro{RGB}{Red Green Blue}
+\acro{SGD}{Stochastic Gradient Descent}
+\end{acronym}
+
+
+%\subsection*{Color legend} %TODO Remove me
+%\textcolor{purple}{purple: find better synonym}
+
+\newpage
+
 \section{Introduction}
 
+\acp{ANN} have proven to be very powerful tools developed and used in the field of Neural Computation. Particularly \acp{CNN} exhibit a solid performance on grafical data like images or videos. Finding patterns and hidden structures in images can be very useful in many respects, one of them is the diagnosis of diseases which influence the appearance of the human face\footnote{cf. \cite{ebgm}}. For that reason \acp{CNN} are used in the scope of this thesis to estimate the position of so called landmarks in images of human faces. While some of those landmarks are preeminent featuers like the eyes or the tip of the nose, other landmarks are less prominent points, which are harder to find.\\
+Since tagging all those landmarks by hand is a tedious work, it is disireable to create an automatism, which estimates them. In order to reach this goal two different general network architectures are used and tested in many different configurations. Both kinds of network take an RGB-image of a human face as input and produce the estimated coordinates of the landmarks as output. The first approach, however, trains a complete \ac{CNN} conventionally, i.e. all the network's weights are initialized randomly and subsequently trained by the \ac{SGD} optimization method. The second approach, on the other hand, uses Gabor wavelets as weights for the first layer of the \ac{CNN}. In this kind of network only the weights of the subsequent layers are trained, while the Gabor wavelets remain unchainged throughout the whole training phase. The Gabor responses are then combined and forwarded through the subsequent layers of the network.\\
+In order to compare the two approaches a \ac{CNN} with the same structure as used with the Gabor wavelets has been trained completly. \dots\\%TODO Elaborate this
+Testing the different networks has shown that \dots%TODO Write more!
+
+% Completely trained network with the dimensions of the gabor network
+% Hint some of the results
+
+\newpage
+
+\section{Background}
+
+\subsection{Artificial Neural Networks}
+
+\subsection{Convolutional Neural Networks}
+
+\newpage
+
+\section{Data}
+
+Training and testing a \ac{CNN} requires an appropriate data set with a sufficiently large number of training and test examples. Daniel Nouri uses the data set from the \emph{Facial Keypoints Detection} challenge on the machine learning website Kaggle\footnote{cf. \cite{kaggle}} in his inspiring tutorial \emph{Using convolutional neural nets to detect facial keypoints}\footnote{cf. \cite{nouri-tutorial}}. This dataset provides a reasonable amount of landmarks, however, it does not provide all landmarks for all faces. To avoid too much data organisation overhead it was used the \ac{MUCT} dataset\footnote{cf. \cite{muct}} instead, which exhibits a simpler structure and provides not only all kaggle landmarks but even more for each depicted person.
+
+\subsection{Kaggle}
+
+Since the first experiments done in the scope of this thesis were inspired by the tutorial by Daniel Nouri named above, it was initially worked with the same data set, which was used there. The contemplated data set is taken from the \emph{Facial Keypoints Detection} challenge on Kaggle and contains 7049 training images as well as 1783 test images with a resolution of $96 \times 96$ pixels. All images are provided as gray value images within the range $[0,255]$.\\
+There are 15 different landmarks (called keypoints on Kaggle), each of which consists of two scalar values $(x,y)$, which represent the horizontal and vertical position of the corresponding feature in the image. The 15 landmarks are:
+\begin{multicols}{2}
+	\begin{itemize}[itemsep=-2ex]
+		\item Left eye center
+		\item Right eye center
+		\item Left eye inner corner
+		\item Left eye outer corner
+		\item Right eye inner corner
+		\item Right eye outer corner
+		\item Left eyebrow inner end
+		\item Left eyebrow outer end
+	\end{itemize}
+\columnbreak
+	\begin{itemize}[itemsep=-2ex]
+		\item Right eyebrow inner end
+		\item Right eyebrow outer end
+		\item Nose tip
+		\item Mouth left corner
+		\item Mouth right corner
+		\item Mouth center top lip
+		\item Mouth center bottom lip
+	\end{itemize}
+	\vphantom{}
+\end{multicols}
+As already mentioned, not all landmarks exist for all images. In fact, for almost all landmarks exists an individiual number of images containing them. This leads to problems, because a \ac{CNN} expects a fixed number of inputs and a produces a fixed number of outputs. It is difficult to develope a mechanism, which checks for each input image how many landmarks are actually given and then includes only these landmarks into the calculation of the error function. Since using this data set would have required a comparatively high organization effort and since the resolution of $96 \times 96$ is rather small, another data set with a larger resolution of the raw images was used.
+
+\subsection{MUCT Face Database}
+
+The \acf{MUCT} face database was created by Stephen Millborrow, John Morkel and Fred Nicolls in December 2008 at the University Of Cape Town.\footnote{cf. \cite{muct}} It contains 3755 faces with 76 manually set landmarks and, as shown in figure \ref{fig:muctfaces}, provides a broad spectrum of faces from people of different age and ethnicity. Furthermore, many different lighting settings have been used in order to increase the diversity of the pictures.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{muct_faces.png}
+	\caption{Five faces from the MUCT Face Database}
+	\label{fig:muctfaces}
+\end{figure}
+
+Since images given in real applications are often not taken from a perfectly frontal perspective on the face, the creators of the data set provide images from five different angles.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{muct_perspectives.png}
+	\caption[MUCT Different Perspectives]{MUCT Different Perspectives\footnotemark}
+	\label{fig:muctfaces}
+\end{figure}
+
+\footnotetext{Illustrations taken from the \cite{muct} paper}
+
+% resolution
+% camera perspectives
+% dismissing of perspectives b and c
+
+
+\newpage
+
+\section{Network}
+
+\subsection{Convolutional Neural Networks}
+
+\subsection{Thoroughly trained CNN}
+
+\subsection{Using Gabor Wavelets}
+
+\newpage
+
+\section{Results}
+
+\subsection{Thoroughly trained CNN}
+
+\subsection{Using Gabor Wavelets}
+
+\subsection{Confrontation of both Approaches}
+
+\newpage
+
+\section{Conclusion}
+
+\newpage
 
 \begin{appendix}
 	\section{Implementation}
+	
+	Theano\footnote{cf. \cite{theano}} was used.
+	
 \end{appendix}
 
+\newpage
+
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\newpage
+
 \addcontentsline{toc}{section}{References}
-\section*{References} %TODO Remove me
-%\bibliography{ref}{}
-%\bibliographystyle{alpha}
-http://www.scholarpedia.org/article/Elastic\_Bunch\_Graph\_Matching\\
-http://danielnouri.org/notes/2014/12/17/using-convolutional-neural-nets-to-detect-facial-keypoints-tutorial/\\
-http://www.milbo.org/muct/\\
-http://www.cs.toronto.edu/$\sim$tijmen/csc321/slides/lecture\_slides\_lec6.pdf\\
-http://cs231n.github.io/neural-networks-3/
-%TODO Put into .bib file
+%\section*{References} %TODO Remove me
+\bibliography{ref}{}
+\bibliographystyle{alpha}
+%http://www.cs.toronto.edu/$\sim$tijmen/csc321/slides/lecture\_slides\_lec6.pdf\\
+%http://cs231n.github.io/neural-networks-3/
+
+\newpage
+
+\thispagestyle{empty}
+
+\begin{center}
+\subsection*{Erklärung / Declaration}
+\end{center}
+\vspace{0.5cm}
+Ich erkläre, dass das Thema dieser Arbeit nicht identisch ist mit dem Thema einer von mir bereits für eine andere Prüfung eingereichten Arbeit.\\
+Ich erkläre weiterhin, dass ich die Arbeit nicht bereits an einer anderen Hochschule zur Erlangung eines akademischen Grades eingereicht habe.
+
+\vspace{0.8cm}
+Ich versichere, dass ich die Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen benutzt habe. Die Stellen der Arbeit, die anderen Werken dem Wortlaut oder dem Sinn nach entnommen sind, habe ich unter Angabe der Quellen der Entlehnung kenntlich gemacht. Dies gilt sinngemäß auch für gelieferte Zeichnungen, Skizzen, bildliche Darstellungen und dergleichen.
+
+\vspace{2cm}
+I declare that the topic of this thesis is not identical to the topic of another thesis written by me for another examination. Furthermore I declare that I did not submit this thesis to another university to obtain an academic degree.
+
+\vspace{0.8cm}
+I assure that I composed this thesis thoroughly on my own without using other sources than the denoted ones. Those fragments of this thesis, which are taken literally or figuratively from other works, are indicated by citing their origin. This also applies to the provided drawings, sketchins, illustrations and suchlike.
+
+\vspace{1.5cm}
+\rule[0.05cm]{5cm}{0.5pt} \hspace{4.5cm} \rule[0.05cm]{5cm}{0.5pt}\\
+Datum / Date \hspace{7.1cm} Unterschrift / Signature
 
 \end{document}
 
