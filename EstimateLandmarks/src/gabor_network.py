@@ -10,16 +10,18 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-weight_store_path = "weights/gabor_lr0.1_sqrt_2conv_mp"
+weight_store_path = "weights/gabor_lr0.1_sqrt_16_09_08"
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
-epochs = 3
+epochs = 500
 normalize = 2
 normalize_output = True
 resolution = (96,128)
 grayscale = False
+mode = "abs"
+add_conv2 = False
 
 # load gabor filters
 try:
@@ -29,10 +31,10 @@ except IOError:
 	print('Error while loading gabor filters')
 
 # build model
-model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode="abs")
+model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/1000")
+#dataset_io.load_status(model, optimizer, weight_store_path + "/1000")
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
 if normalize == 1:
@@ -64,7 +66,7 @@ callbacks.append(loss_callback)
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
 # save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/1003")
+dataset_io.store_status(model, optimizer, weight_store_path + "/500")
 
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
@@ -82,5 +84,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt_2conv_mp/results_1003.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_sqrt_16_09_08_zappa/results_500.dat", "w") as loss_file:
 		loss_file.write(result_string)
