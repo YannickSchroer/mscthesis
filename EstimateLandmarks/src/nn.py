@@ -74,7 +74,7 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 
 	return model, optimizer
 
-def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01, momentum=0., decay = 0.0, nesterov=False):
+def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01, momentum=0., decay = 0.0, nesterov=False, mode="abs", add_conv2=True):
 	'''This method constructs a model with gabor convolutional layers and subsequent fully connected layers'''
 
 	# initialize lists to save the single models
@@ -101,17 +101,28 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		real_model = models.Sequential()
 		imag_model = models.Sequential()
 
-		# add convolution layers and square results
-		real_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
-		#real_model.add(core_layers.Lambda(lambda x: x ** 2))
-		imag_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
-		#imag_model.add(core_layers.Lambda(lambda x: x ** 2))
-
-		# merge real and imaginary models, sum up their outputs
+		# create merged model
 		merge_real_imag_model = models.Sequential()
-		merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='sumsqrt'))
+		if mode == "abs":
+			# add convolution layers and square results
+			real_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
+			imag_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
 
-		#TODO Atan2 Layer
+			# merge real and imaginary models, sum up their outputs and compute squareroot
+			merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='sum'))
+
+		elif mode == "atan2":
+			# add convolution layers
+			real_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
+			imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
+
+			# merge real and imaginary models by taking their atan2
+			merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+		else:
+			raise NotImplementedError
+
+		#print(merge_real_imag_model.output_shape)
+		#exit()
 
 		# append the model to the model list
 		first_layer_models.append(merge_real_imag_model)
@@ -138,8 +149,9 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 
 	# add additional convolutional layers
 	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
-	merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
-	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
+	if add_conv2:	
+		merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+		merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
 
 	# flatten model
 	merged_model.add(core_layers.Flatten())
