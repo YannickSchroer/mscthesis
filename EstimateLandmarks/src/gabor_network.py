@@ -29,7 +29,7 @@ except IOError:
 	print('Error while loading gabor filters')
 
 # build model
-model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode="atan2")
+model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode="abs")
 
 # Load status
 dataset_io.load_status(model, optimizer, weight_store_path + "/1000")
