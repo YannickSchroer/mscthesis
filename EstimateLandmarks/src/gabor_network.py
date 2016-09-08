@@ -84,5 +84,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt_16_09_08_zappa/results_500.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_sqrt_16_09_08/results_500.dat", "w") as loss_file:
 		loss_file.write(result_string)
