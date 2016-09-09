@@ -44,7 +44,7 @@ class RecordLossGabor(keras.callbacks.Callback):
 	def __init__(self, nb_epochs, nb_labels, data, labels, resolution, model):
 		self.nb_epochs = nb_epochs
 		self.nb_labels = nb_labels
-		self.data = np.copy(data)
+		self.data = [data[x] for x in range(len(data))]
 		self.labels = np.copy(labels)
 		self.resolution = resolution
 		self.model = model
