@@ -20,7 +20,7 @@ normalize = 2
 normalize_output = True
 resolution = (96,128)
 grayscale = False
-mode = "atan2"
+mode = "abs"
 add_conv2 = False
 
 # load gabor filters
