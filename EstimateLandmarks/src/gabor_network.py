@@ -10,18 +10,18 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-weight_store_path = "weights/gabor_lr0.1_sqrt_16_09_08"
+weight_store_path = "weights/gabor_lr0.1_atan2_2conv"
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
-epochs = 500
+epochs = 800
 normalize = 2
 normalize_output = True
 resolution = (96,128)
 grayscale = False
-mode = "abs"
-add_conv2 = False
+mode = "atan2"
+add_conv2 = True
 
 # load gabor filters
 try:
@@ -34,7 +34,7 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/500")
+#dataset_io.load_status(model, optimizer, weight_store_path + "/500")
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
 if normalize == 1:
@@ -59,14 +59,14 @@ if normalize_output:
 	callbacks = [custom_callbacks.Distortions(x_train, y_train, x_train.shape[0], (float(original_resolution[0]) / float(max_dim), float(original_resolution[1]) / float(max_dim)))]
 else:
 	callbacks = [custom_callbacks.Distortions(x_train, y_train, x_train.shape[0], original_resolution)]
-loss_callback = custom_callbacks.RecordLossGabor(epochs, nb_labels, expanded_x_train, y_train, resolution, model)
+loss_callback = custom_callbacks.RecordLossGabor(epochs, nb_labels, x_train, y_train, resolution, model)
 callbacks.append(loss_callback)
 
 # fit model
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
 # save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/1000")
+dataset_io.store_status(model, optimizer, weight_store_path + "/800")
 
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
@@ -84,5 +84,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_sqrt_16_09_08/results_1000.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_atan2_2conv/results_800.dat", "w") as loss_file:
 		loss_file.write(result_string)

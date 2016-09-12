@@ -42,8 +42,8 @@ def create_image_list(csv_path, labels=True):
 
 	return image_list, original_resolution
 
-def read_data(csv_path, resolution, d=None, normalize=True, autocontrast=True, grayscale=False, return_image_properties=False, return_original_resolution=False, labels=True):
-	'''In order to construct the data structures, which contain the training and test data, this method takes the path to a csv file, which saves information about the images. In addition, this method takes the 'resolution' to which the images are to be scaled, a parameter 'd' which determines how many images are to be processed, a boolean parameter 'normalize' which controls whether the images shall be normalized to the interval [0,1] and a boolean parameter 'autocontrast' which controls whether a PIL intern method shall be used to increase the contrast of the images. The parameter 'grayscale' determines whether the color information will be used or not. The boolean parameter 'return_image_properties' can be set to 'True' in order to return the image list created by the create_image_list method called within this method. If the flag 'labels' is set to 'False', the labels will be ignored'''
+def read_data(csv_path, resolution, d=None, normalize=2, autocontrast=True, grayscale=False, return_image_properties=False, return_original_resolution=False, labels=True):
+	'''In order to construct the data structures, which contain the training and test data, this method takes the path to a csv file, which saves information about the images. In addition, this method takes the 'resolution' to which the images are to be scaled, a parameter 'd' which determines how many images are to be processed, an int parameter 'normalize' which controls whether the images shall be normalized to the interval [0,1] (noramlize=1) or [-1,1] (normalize=2) or not at all (normalize=0) and a boolean parameter 'autocontrast' which controls whether a PIL intern method shall be used to increase the contrast of the images. The parameter 'grayscale' determines whether the color information will be used or not. The boolean parameter 'return_image_properties' can be set to 'True' in order to return the image list created by the create_image_list method called within this method. If the flag 'labels' is set to 'False', the labels will be ignored'''
 	#create image list
 	image_list, original_resolution = create_image_list(csv_path, labels)
 
@@ -90,9 +90,12 @@ def read_data(csv_path, resolution, d=None, normalize=True, autocontrast=True, g
 			# save target values
 			y[idx] = image['labels']
 
-	# normalize images to range [0,1] if desired
-	if normalize:
+	# normalize images to range [0,1] or [-1,1] if desired
+	if normalize > 0:
 		X /= 255.0
+		if normalize == 2:
+			X *= 2
+			X -= 1
 
 	if labels:
 		if return_image_properties:

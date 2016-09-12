@@ -121,9 +121,6 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		else:
 			raise NotImplementedError
 
-		#print(merge_real_imag_model.output_shape)
-		#exit()
-
 		# append the model to the model list
 		first_layer_models.append(merge_real_imag_model)
 
