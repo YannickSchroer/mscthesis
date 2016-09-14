@@ -34,7 +34,7 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/800")
+#dataset_io.load_status(model, optimizer, weight_store_path + "/800")
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
 if normalize == 1:
