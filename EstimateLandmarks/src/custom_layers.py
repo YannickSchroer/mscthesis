@@ -205,7 +205,7 @@ class ExtendedMerge(Layer):
             a list of layer instances. Must be more
             than one layer/tensor.
         mode: string or lambda/function. If string, must be one
-            of: 'sum', 'mul', 'concat', 'ave', 'cos', 'dot', 'sumsqrt', 'arctan2'.
+            of: 'sum', 'mul', 'concat', 'ave', 'cos', 'dot', 'abs', 'arctan2'.
             If lambda/function, it should take as input a list of tensors
             and return a single tensor.
         concat_axis: integer, axis to use in mode `concat`.
@@ -273,7 +273,7 @@ class ExtendedMerge(Layer):
         as appropriate.
         '''
         if not hasattr(mode, '__call__'):
-            if mode not in {'sum', 'mul', 'concat', 'ave', 'cos', 'dot', 'sumsqrt', 'atan2'}:
+            if mode not in {'sum', 'mul', 'concat', 'ave', 'cos', 'dot', 'abs', 'atan2'}:
                 raise Exception('Invalid merge mode: ' + str(mode))
         if type(layers) not in {list, tuple} or len(layers) < 2:
             raise Exception('A Merge should only be applied to a list of '
@@ -291,7 +291,7 @@ class ExtendedMerge(Layer):
                 layer_output_shape = layer_output_shape[tensor_indices[i]]
             input_shapes.append(layer_output_shape)
 
-        if mode in {'sum', 'mul', 'ave', 'cos', 'sumsqrt', 'atan2'}:
+        if mode in {'sum', 'mul', 'ave', 'cos', 'abs', 'atan2'}:
             input_shapes_set = set(input_shapes)
             if len(input_shapes_set) > 1:
                 raise Exception('Only layers of same output shape can '
@@ -342,14 +342,12 @@ class ExtendedMerge(Layer):
             arguments = {}
             return self.mode(inputs, **arguments)
 
-        if self.mode == 'sum' or self.mode == 'ave' or self.mode == 'sumsqrt':
+        if self.mode == 'sum' or self.mode == 'ave':
             s = inputs[0]
             for i in range(1, len(inputs)):
                 s += inputs[i]
             if self.mode == 'ave':
                 s /= len(inputs)
-            if self.mode == 'sumsqrt':
-				s = K.sqrt(s)
             return s
 
         elif self.mode == 'concat':
@@ -375,6 +373,12 @@ class ExtendedMerge(Layer):
             output = K.batch_dot(l1, l2, self.dot_axes) / denominator
             output = K.expand_dims(output, 1)
             return output
+
+        elif self.mode == 'abs':
+			s = inputs[0] * inputs[0]
+			for i in range(1, len(inputs)):
+				s += inputs[i] * inputs[i]
+			return K.sqrt(s)
 
         elif self.mode == 'atan2':
 			return T.tensor.arctan2(inputs[1], inputs[0])
@@ -443,7 +447,7 @@ class ExtendedMerge(Layer):
                                 '`output_shape` to Merge.')
         # pre-defined merge modes
         input_shapes = input_shape
-        if self.mode in ['sum', 'mul', 'ave', 'sumsqrt', 'atan2']:
+        if self.mode in ['sum', 'mul', 'ave', 'abs', 'atan2']:
             # all tuples in input_shapes should be the same
             return input_shapes[0]
         elif self.mode == 'concat':

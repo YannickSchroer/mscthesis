@@ -42,14 +42,15 @@ class RecordLoss(keras.callbacks.Callback):
 class RecordLossGabor(keras.callbacks.Callback):
 	'''This class is a callback, which computes and saves the loss after each epoch'''
 	def __init__(self, nb_epochs, nb_labels, data, labels, resolution, model):
+		# data and labels could be passed already copied and extended etc.
 		self.nb_epochs = nb_epochs
 		self.nb_labels = nb_labels
-		self.data_not_expanded = np.copy(data)
-		self.data = [self.data_not_expanded for x in range(10)]
 		self.labels = np.copy(labels)
 		self.resolution = resolution
 		self.model = model
 		self.loss_history = np.empty((self.nb_epochs))
+		self.data_not_expanded = np.copy(data)
+		self.data = [self.data_not_expanded for x in range(10)]
 
 	def calculate_loss(self):
 		'''This method calculates the mean loss and the individual losses.'''

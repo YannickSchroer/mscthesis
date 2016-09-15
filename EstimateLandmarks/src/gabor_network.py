@@ -10,7 +10,7 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-weight_store_path = "weights/gabor_lr0.1_atan2_np"
+weight_store_path = "weights/gabor_lr0.1_absatan2"
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
 decay = 0.
@@ -20,7 +20,7 @@ normalize = 2
 normalize_output = True
 resolution = (96,128)
 grayscale = False
-mode = "atan2"
+mode = "abs_atan2"
 add_conv2 = False
 
 # load gabor filters
@@ -48,7 +48,7 @@ else:
 x_train, y_train, original_resolution = dataset_io.read_data(data_path, resolution, normalize=normalize, grayscale=grayscale, return_original_resolution=True)
 nb_labels = 30
 max_dim = np.max(original_resolution)
-expanded_x_train = [x_train,x_train,x_train,x_train,x_train,x_train,x_train,x_train,x_train,x_train]
+expanded_x_train = [x_train for i in range(10)]
 
 # normalize output
 if normalize_output:
@@ -84,5 +84,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_atan2_np/results_1000.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_absatan2/results_1000.dat", "w") as loss_file:
 		loss_file.write(result_string)
