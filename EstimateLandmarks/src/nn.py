@@ -101,28 +101,38 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		real_model = models.Sequential()
 		imag_model = models.Sequential()
 
-		# create merged model
-		merge_real_imag_model = models.Sequential()
-		if mode == "abs":
-			# add convolution layers and square results
-			real_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
-			imag_model.add(custom_layers.SquaredConvolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
+		# add convolution layers
+		real_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
+		imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
 
+		# create merged model
+		gabor_merged_model = models.Sequential()
+
+		if mode == "abs":
 			# merge real and imaginary models, sum up their outputs and compute squareroot
-			merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='sum'))
+			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
 
 		elif mode == "atan2":
-			# add convolution layers
-			real_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
-			imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
-
 			# merge real and imaginary models by taking their atan2
-			merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+
+		elif mode == "abs_atan2":
+			# create merged models
+			abs_merge_real_imag_model = models.Sequential()
+			atan2_merge_real_imag_model = models.Sequential()
+
+			# merge real and imaginary models, sum up their outputs and compute squareroot
+			abs_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
+			atan2_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+
+			# merge 'abs' and 'atan2' model
+			gabor_merged_model.add(core_layers.Merge([abs_merge_real_imag_model, atan2_merge_real_imag_model], concat_axis=1, mode='concat'))
+
 		else:
 			raise NotImplementedError
 
 		# append the model to the model list
-		first_layer_models.append(merge_real_imag_model)
+		first_layer_models.append(gabor_merged_model)
 
 	# find maximal output dimensions
 	max_output_x = 0
@@ -154,7 +164,7 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	merged_model.add(core_layers.Flatten())
 
 	# add two fully connected layers
-	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
+	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=300 if mode == "abs_atan2" else 200))
 	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
 
 	# add output layer
