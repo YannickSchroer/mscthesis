@@ -10,18 +10,18 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-weight_store_path = "weights/gabor_lr0.1_absatan2_2conv"
+weight_store_path = "weights/gabor_lr0.1_absatan2_hd"
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
-epochs = 1000
+epochs = 500
 normalize = 2
 normalize_output = True
-resolution = (96,128)
+resolution = (240,320)
 grayscale = False
 mode = "abs_atan2"
-add_conv2 = True
+add_conv2 = False
 
 # load gabor filters
 try:
@@ -66,7 +66,7 @@ callbacks.append(loss_callback)
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
 # save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/1000")
+dataset_io.store_status(model, optimizer, weight_store_path + "/500")
 
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
@@ -84,5 +84,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/gabor_lr0.1_absatan2_2conv/results_1000.dat", "w") as loss_file:
+with open("results/gabor_lr0.1_absatan2_hd/results_500.dat", "w") as loss_file:
 		loss_file.write(result_string)
