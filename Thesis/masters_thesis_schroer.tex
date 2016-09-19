@@ -76,12 +76,10 @@
 \newcommand\dprod{\displaystyle \prod}
 \newcommand\closedInt[2]{\left[#1,#2\right]}
 \newcommand{\checkbox}{\Large \Square \normalsize \hspace{0.4cm}}
-
 \newcommand\V[1]{\ensuremath{\underline{\mathbf{#1}}}}
 \newcommand\M[1]{\ensuremath{\underline{\underline{\mathbf{#1}}}}}
-
-\newcommand\myref[1]{\ref{#1} (S. \pageref{#1})}
-\newcommand\myrefcomma[1]{\ref{#1}, S. \pageref{#1}}
+\newcommand\myref[1]{\ref{#1} (p. \pageref{#1})}
+\newcommand\myrefcomma[1]{\ref{#1}, p. \pageref{#1}}
 
 \begin{document}
 
@@ -120,7 +118,7 @@
     Schrör, Phil Yannick\\
     108 011 214 024\\
     \vspace{2cm}
-    \textbf{To be handed in:}\\
+    \textbf{Handed in on:}\\
     31st of October 2016\\
     \vspace{2cm}
     \textbf{Supervisors:}\\
@@ -142,15 +140,14 @@
 \section*{List of Acronyms}
 \markboth{LIST OF ACRONYMS}{}
 
-%\acrodefplural{KNN}[KNN]{Künstliche Neuronale Netzwerke}
-
-\begin{acronym}
+\renewcommand*\bflabel[1]{\textbf{#1}}
+\begin{acronym}[INDENT]
 \acro{ANN}{Artificial Neural Network}
 \acro{CNN}{Convolutional Neural Network}
 \acro{MSSE}{Mean Summed Squared Error}
 \acro{MUCT}{Milborrow / University of Cape Town} (Image data set)
 \acro{ReLU}{Rectified Linear Unit}
-\acro{RGB}{Red Green Blue}
+\acro{RGB}{Red Green Blue} (Color space)
 \acro{RNN}{Recurrent Neural Network}
 \acro{SGD}{Stochastic Gradient Descent}
 \end{acronym}
@@ -318,7 +315,7 @@ By adding the activation function, the model becomes non-linear. A sufficiently 
 \operatorname{ReLU}(a) = \begin{cases}a, \text{ if } a > 0\\0, \text{ else}\end{cases}
 \end{align}
 
-Figure \ref{fig:relu} shows the plot of this activation function:
+Figure \ref{fig:relu} shows the plot of this activation function.
 
 \begin{figure}[htbp]
 	\centering
@@ -365,28 +362,29 @@ Being biologically plausible is not necessarily essential to construct a well pe
 The still most common \acp{ANN} are feed-forward neural networks. The neurons in a feed-forward neural network are usually organized in consecutive layers, which propagate the information in only one direction through the network. Figure \ref{fig:ffnn} shows a fully connected feed-forward network with one input layer, one output layer and two layers in between, which are called hidden layers.
 \input{includes/ffnn}
 
-As illustrated by the arrows in figure \ref{fig:ffnn}, the information is passed from the leftmost neurons in the input layer to the first hidden layer, then to the second hidden layer and finally to the output layer on the right. The number of neurons in the input layer has to correspond to the dimensionality of the input space. The number of neurons in the output layer is determined by the number of classes in a classification task or the number of desired outputs in a regression task respectively. Hence, these parameters are clearly defined by the problem and are not subject to the optimization process. On the other hand, the number of the neurons in the hidden layers and the number of the hidden layers itself depends on the complexity of the task, which shall be solved by the network. For easy solvable problems only a few neurons may suffice, while difficult tasks can require several hundred or thousand neurons. Figuring out an appropriate network architecture is a task, whose difficulty should be not underestimated.\\
-The above depicted network is called fully-connected, because a neuron in layer $i$ has a connection to each neuron in layer $i + 1$. Note that there are no connections within one single layer. If there were also connections in the other direction, the network would be a \ac{RNN}. Although there are many interesting problems to which \acp{RNN} could be applied to, \acp{RNN} are much less prominent in Machine Learning, because there are very few well-established training algorithms. For feed-forward networks, however, exist reliable training algorithms. The most used of them is called Backpropagation. Backpropagation profits from the observation that a feed-forward \ac{ANN} is nothing more than a mathematical function, which fulfills the requirements for being differentiable. While the sigmoidal activation function and the hyperbolic tangent activation function are differentiable, the \ac{ReLU} is a bit problematic, because it is not differentiable at $0$. This problem can be eluded by setting the gradient to $0$ at this position. To understand how Backpropagation works, it is necessary to introduce an error function. The formula for a very common error function, the \ac{MSSE}, is given in equation \eqref{eq:msse}.
+As illustrated by the arrows in figure \ref{fig:ffnn}, the information is passed from the leftmost neurons in the input layer to the first hidden layer, then to the second hidden layer and finally to the output layer on the right. The number of neurons in the input layer has to correspond to the dimensionality of the input space. The number of neurons in the output layer is determined by the number of classes in a classification task or the number of desired outputs in a regression task respectively. Hence, these parameters are clearly defined by the problem and are not subject to the optimization process. On the other hand, the number of the neurons in the hidden layers and the number of the hidden layers itself depends on the complexity of the task, which shall be solved by the network. For easily solvable problems only a few neurons may suffice, while difficult tasks can require several hundred or thousand neurons. Figuring out an appropriate network architecture is a task, whose difficulty should be not underestimated.\\
+The above depicted network is called fully-connected, because each neuron in layer $i$ has a connection to each neuron in layer $i + 1$. Note that there are no connections within one single layer. If there were also connections in the other direction, the network would be a \ac{RNN}. Although there are many interesting problems to which \acp{RNN} could be applied to, \acp{RNN} are much less prominent in Machine Learning, because there are very few well-established training algorithms. For feed-forward networks, however, exist reliable training algorithms. The most used of them is called Backpropagation. Backpropagation profits from the observation that a feed-forward \ac{ANN} is nothing more than a mathematical function, which fulfills the requirements for being differentiable. While the sigmoidal activation function and the hyperbolic tangent activation function are differentiable, the \ac{ReLU} is a bit problematic, because it is not differentiable at $0$. This problem can be eluded by setting the gradient to $0$ at this position. To understand how Backpropagation works, it is necessary to introduce an error function. The formula for a very common error function, the \ac{MSSE}, is given in equation \eqref{eq:msse}.
 \begin{align}
 \label{eq:msse}
 \operatorname{MSSE} = \frac{1}{N} \cdot \sum_{i}^{N} \left(\hat{y}_i - y_i\right)^2
 \end{align}
-$N$ is the number of samples, e.g. the number of images used for training an \ac{ANN}. $\hat{y}_i$ is the predicted value for the $i$-th input vector $\V{x}_i$ and $y_i$ the true value, i.e. the label, of the said input. The goal of training an \ac{ANN} is to adapt its weights such that its prediction $\hat{y}_i$ is as close as possible to the true label $y_i$. In this case, the squared difference $(\hat{y}_i - y_i)^2$ is very small and does hardly contribute to the eventual value of the sum.\\
-The value $\hat{y}_i$ is the result of the function, which is implemented by the neural network, and therefore depends mainly on the weights. Firstly, Backpropagation calculates the gradient of the error function with respect to the weights for a subset of the input data set by applying the chain rule. Since the gradient always points in the direction of the strongest increase, the weights are adapted by subtracting the gradient multiplied with a certain value, which is called learning rate. The learning rate determines how much influence the chosen subset of input data has on the weight changes. One way to chose the mentioned data subset is to consider all data and adapt the weights after presenting all inputs to the network, i.e. calculating the prediction $\hat{y}_i$ for each input vector $\V{x}_i$. The process of presenting all inputs is called an epoch. This method has the advantage of being relatively robust against noise, because it is averaged out to a certain degree. The disadvantage is that the weights are learned rather slowly, because a lot of epochs are needed until the network produces good results. Another way is to use small batches, i.e. the data is divided in $n$ equally sized subsets, which are subsequently presented to the network. Since the weights are adapted after each batch, the learning process should be faster. This method is called \acf{SGD}.\\
-With $n_i$ as number of neurons in layer $i$, there are $n_i \cdot n_{i+1}$ connections between layer $i$ and layer $i+1$. That means that there are many connections, whose weights have to be learned during the training phase. Since the training time of such a network can easily last several days, more effective models are desirable.
+$N$ is the number of samples, e.g. the number of images used for training an \ac{ANN}. $\hat{y}_i$ is the predicted value for the $i$-th input vector $\V{x}_i$ and $y_i$ the true value, i.e. the label, of the said input. The goal of training an \ac{ANN} is to adapt its weights such that its prediction $\hat{y}_i$ is as close as possible to the true label $y_i$. If the two values are very close, the squared difference $(\hat{y}_i - y_i)^2$ is very small and adds almost nothing to the eventual value of the sum. If the values diverge, their squared difference gets very large and the error function increases superlinearly. Thus, the \ac{MSSE} error function punishes large deviations more than small deviations.\\
+The value $\hat{y}_i$ is the result of the function, which is implemented by the neural network, and therefore depends mainly on the weights. Firstly, Backpropagation calculates the gradient of the error function with respect to the weights for a subset of the input data set by applying the chain rule. Since the gradient always points in the direction of the steepest incline, the weights are adapted by subtracting the gradient multiplied with a certain value, which is called learning rate. The learning rate determines how much influence the chosen subset of input data has on the weight changes. One way to choose the mentioned data subset is to consider all data and adapt the weights after presenting all inputs to the network, i.e. calculating the prediction $\hat{y}_i$ for each input vector $\V{x}_i$. The process of presenting all inputs is called an epoch. This method has the advantage of being relatively robust against noise, because it is averaged out to a certain degree. The disadvantage is that the weights are learned rather slowly, because a lot of epochs are necessary until the network produces good results. Another method, which is called \acf{SGD}, uses only small batches, i.e. the data is divided in $n$ equally sized subsets, which are subsequently presented to the network. The idea is that the gradient of each batch is an approximation of the true gradient. Since the weights are adapted after each batch, the learning process should be faster. One possible caveat, however, is that outliers have a rather strong influence on the weight changes.\\
+With $n_i$ as number of neurons in layer $i$, there are $n_i \cdot n_{i+1}$ connections between layer $i$ and layer $i+1$. That means that there are many connections, whose weights have to be learned during the training phase. Since the training time of such a network can easily last several days, more time-efficient models are desirable.
 
 \subsection{Convolutional Neural Networks}
 
-\begin{itemize}
-\item few weights
-\item exploit 2D structure
-\end{itemize}
+\acfp{CNN} are a specific kind of \acp{ANN}, which perform very well on image data, because they are able to exploit the images' two-dimensional structure. The key idea is to replace some of the fully connected layers at the beginning of the network with convolutional layers. A very important property of these layers is that they use only little weight patches, which are called filters, for the whole layer instead of connecting each neuron of one layer with all neurons of the succeeding layer. This way many connections can be omitted, resulting in a shorter training time. Figure \ref{fig:centered_filter} shows how a convolutional layer functions in general.
+\input{includes/functioning_cnn}
+The filter in this example has a size of $3\times3$ and is emphasized by the 9 purple circles and by the light red background. The filter in the illustration is currently centered on the fifth neuron from the left and second from the bottom. The multiplication symbol $*$ in the small rectangle in the top right corner of the filter indicates that the activation value of each neuron, which is covered by the filter, is multiplied with the weight of the filter at the corresponding position. The resulting products are summed up to a single value, which is inserted in the activation function and finally becomes the activation of the neuron in layer $i+1$. This is done not only once, but the filter is centered on each neuron of layer $i$ in order to produce the activations of the neurons in layer $i+1$. Using this method a drastic reduction of weights is achieved by replacing the $n_i \cdot n_{i+1}$ weights, which would be required for a fully connected \ac{ANN}, with a constant number of weights, which is independent of the number of neurons in the two connected layers.\\
+Note that the dimensionality of layer $i+1$ is slightly reduced by $(m_h - 1) / 2$ neurons in horizontal direction and $(m_v - 1)/2$ neurons in vertical direction (with $m_h$ = filter height and $m_v$ = filter width), because the filter cannot be centered on the outermost neurons. Border treatment techniques known from digital image processing like Wrap Around or Zero Padding are usually not used. The name Convolutional Neural Network originates from the strong resemblance of the mathematical concept of convolution with the way how the filter's weights are multiplied with the activation values of the neurons.\\
+Typically \acp{CNN} do not use only one filter per layer, but several filters. As illustrated in figure \ref{fig:cnn_maps}, the above described mechanism is repeated for every filter, resulting in several outputs, which are called maps. Subsequent layers operate on each of these maps, producing more and more maps, each of which should ideally represent a certain feature.
 
-\subsection{Deep Learning}
-
-\begin{itemize}
-\item many many many layers
-\end{itemize\
+\input{includes/cnn_maps}
+Next to the convolutional layer there is another layer, which is normally part of a \ac{CNN}, namely the Max Pooling layer. This layer is used to increase the translation invariance of the network by combining a patch of neurons of its input map to only one neuron. This is done by choosing the maximum activation of the contemplated neurons as output. It is very common to use a $2\times2$ patch, but also larger patches are possible. Figure \ref{fig:max_pooling} illustrates this concept for a single max pooling operation on a batch of 4 neurons.
+\input{includes/max_pooling}
+As depicted in the figure max pooling drastically decreases the number of neurons by a factor $h$ in horizontal direction and a factor $v$ in vertical direction, given a max pooling patch size of $h\times v$. While the early layers in the network respond to basic features like edges and corners, the later layers in the network, which survey a relatively large area of the image because of the max pooling operation, respond to more complex compound features without having knowledge of the precise locations of all their contributing individual parts. This behavior is desirable particularly for classification tasks, because it is often not necessary to know where the features are located in the image. In regression tasks, however, precise knowledge about the features' position is very valuable, so the use of max pooling should be limited to a certain degree.\\
+Most \acp{CNN} use convolutional layers and max pooling layers alternately, producing more and more high-level feature extractors with increasing depth of the network. After the last max pooling layer a small number of fully connected layers follows to connect the responses of the high-level feature extractors logically in order to produce reasonable predictions. \acp{CNN} often possess very many consecutive layers, the network becomes very deep. This is where the recently often used terms \q{Deep Learning} and \q{Deep Convolutional Network} originate from. 
 
 \newpage
 
@@ -457,7 +455,7 @@ This naming system is highly valuable, because selecting only a certain subset o
 Since \acp{ANN} usually require a fixed input size and a fixed output size, all images taken from camera view \texttt{b} and \texttt{c} were omitted and not used at all. For that reason the total number of images shrinks to 2257, which were divided randomly in 1752 training images and 502 test images by declaring 20\% of the persons as test persons. No person was assigned to both training set and test set in order to increase the generalization capability of the network. Hence, the test images presented to the network always showed persons unknown to the network.
 %Maybe add something about the lighting settings, if there will remain too much unused space.
 
-\subsection{Data Preprocessing}
+\subsection{Image Preprocessing}
 
 \begin{itemize}
 \item image size
@@ -515,13 +513,6 @@ Cite Glorot! (again)
 \item Larger resolution, absolute value
 \item Larger resolution, arctan2
 \end{itemize}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{res_gabor_sqrt_vs_2conv.png}
-	\caption{Results Gabor Sqrt vs 2Conv}
-	\label{fig:res_gabor_sqrt_vs_2conv}
-\end{figure}
 
 \subsection{Confrontation of both Approaches}
 
