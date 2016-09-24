@@ -55,10 +55,8 @@ def read_data(csv_path, resolution, d=None, normalize=2, autocontrast=True, gray
 		image_list = image_list[:d]
 
 	# create empty arrays with appropriate size
-	if grayscale:
-		X = np.empty((num_images, 1, resolution[0], resolution[1]), dtype=float)
-	else:
-		X = np.empty((num_images, 3, resolution[0], resolution[1]), dtype=float)
+	X = np.empty((num_images, 1 if grayscale else 3, resolution[0], resolution[1]), dtype=float)
+
 	if labels:
 		y = np.empty((num_images, len(image_list[0]['labels'])))
 

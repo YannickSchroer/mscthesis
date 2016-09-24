@@ -41,16 +41,15 @@ class RecordLoss(keras.callbacks.Callback):
 
 class RecordLossGabor(keras.callbacks.Callback):
 	'''This class is a callback, which computes and saves the loss after each epoch'''
-	def __init__(self, nb_epochs, nb_labels, data, labels, resolution, model):
+	def __init__(self, nb_epochs, nb_labels, data_orig, labels_orig, resolution, model):
 		# data and labels could be passed already copied and extended etc.
 		self.nb_epochs = nb_epochs
 		self.nb_labels = nb_labels
-		self.labels = np.copy(labels)
+		self.labels = labels_orig
 		self.resolution = resolution
 		self.model = model
 		self.loss_history = np.empty((self.nb_epochs))
-		self.data_not_expanded = np.copy(data)
-		self.data = [self.data_not_expanded for x in range(10)]
+		self.data = [data_orig for x in range(10)]
 
 	def calculate_loss(self):
 		'''This method calculates the mean loss and the individual losses.'''
@@ -73,10 +72,10 @@ class StopEarly(keras.callbacks.Callback):
 
 class Distortions(keras.callbacks.Callback):
 	'''This class is a callback, which transforms the input images (and labels) before each epoch.'''
-	def __init__(self, x, y, number_of_images, original_resolution, normalize=True):
-		self.original_x = np.copy(x)
+	def __init__(self, x, y, x_orig, y_orig, number_of_images, original_resolution, normalize=True):
+		self.original_x = x_orig
 		self.x = x
-		self.original_y = np.copy(y)
+		self.original_y = y_orig
 		self.y = y
 		self.resolution = x.shape[2:4]
 		self.original_resolution = original_resolution
@@ -154,6 +153,10 @@ class Distortions(keras.callbacks.Callback):
 		shift_values = np.random.uniform(- 0.1 * self.x.shape[1], 0.1 * self.x.shape[2], (self.number_of_images))
 		rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
 		scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
+
+		#shift_values = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[2], (self.number_of_images))
+		#rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
+		#scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
 
 		# iterate over all images and transform them
 		for img_id in range(self.number_of_images):

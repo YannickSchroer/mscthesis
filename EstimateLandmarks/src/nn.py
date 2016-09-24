@@ -88,8 +88,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		nb_col = filter_shape[1]
 
 		# initalize lists, which save all real and imaginary parts for the corresponding m
-		real_filters = np.empty((len(m_filters), 3, filter_shape[0], filter_shape[1]))
-		imag_filters = np.empty((len(m_filters), 3, filter_shape[0], filter_shape[1]))
+		real_filters = np.empty((len(m_filters), input_shape[0], filter_shape[0], filter_shape[1]))
+		imag_filters = np.empty((len(m_filters), input_shape[0], filter_shape[0], filter_shape[1]))
 
 		# iterate over all L filters for corresponding m
 		for idx, fil in enumerate(m_filters):
