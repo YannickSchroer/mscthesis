@@ -150,13 +150,13 @@ class Distortions(keras.callbacks.Callback):
 	def on_epoch_begin(self, epoch, logs={}):
 		'''This method is called at the beginning of each epoch. Images and labels are shifted, rotated and scaled.'''
 		# create random values for shift, rotation and scaling
-		shift_values = np.random.uniform(- 0.1 * self.x.shape[1], 0.1 * self.x.shape[2], (self.number_of_images))
-		rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
-		scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
-
-		#shift_values = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[2], (self.number_of_images))
+		#shift_values = np.random.uniform(- 0.1 * self.x.shape[1], 0.1 * self.x.shape[2], (self.number_of_images))
 		#rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
-		#scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
+		#scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
+
+		shift_values = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[2], (self.number_of_images))
+		rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
+		scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
 
 		# iterate over all images and transform them
 		for img_id in range(self.number_of_images):
