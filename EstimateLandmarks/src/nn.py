@@ -102,8 +102,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		imag_model = models.Sequential()
 
 		# add convolution layers
-		real_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
-		imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
+		real_model.add(conv_layers.Convolution2D(activation='linear', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))]))
+		imag_model.add(conv_layers.Convolution2D(activation='linear', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))]))
 
 		# create merged model
 		gabor_merged_model = models.Sequential()
