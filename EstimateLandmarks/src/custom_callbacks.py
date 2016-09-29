@@ -181,7 +181,7 @@ class Distortions(keras.callbacks.Callback):
 			labels = np.empty(self.y[img_id].shape)
 			for l in range(labels.shape[0] / 2):
 				# shift labels
-				labels[2*l:2*l+2] = self.shift_label(self.original_y[img_id][2*l:2*l+2], (shift_values[img_id],shift_values[img_id]))
+				labels[2*l:2*l+2] = self.shift_label(self.original_y[img_id][2*l:2*l+2], (shift_values_x[img_id],shift_values_y[img_id]))
 
 				# rotate labels
 				labels[2*l:2*l+2] = self.rotate_label(labels[2*l:2*l+2], rotate_angles[img_id])
