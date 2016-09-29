@@ -154,7 +154,8 @@ class Distortions(keras.callbacks.Callback):
 		#rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
 		#scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
 
-		shift_values = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[2], (self.number_of_images))
+		shift_values_x = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[1], (self.number_of_images))
+		shift_values_y = np.random.uniform(- 0.2 * self.x.shape[2], 0.2 * self.x.shape[2], (self.number_of_images))
 		rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
 		scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
 
@@ -163,7 +164,7 @@ class Distortions(keras.callbacks.Callback):
 			# ~~~~~~~~~~~~~~~~ Transform image ~~~~~~~~~~~~~~~~ #
 
 			# shift (does not change shape)
-			img = trans.shift(self.original_x[img_id], [0, shift_values[img_id], shift_values[img_id]], mode="nearest", order=1)
+			img = trans.shift(self.original_x[img_id], [0, shift_values_x[img_id], shift_values_y[img_id]], mode="nearest", order=1)
 
 			# rotate (does not change shape)
 			img = trans.rotate(img, axes=(1,2), angle=rotate_angles[img_id], reshape=False, mode="nearest", order=1)
