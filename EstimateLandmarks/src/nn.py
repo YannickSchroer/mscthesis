@@ -167,7 +167,7 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	merged_model.add(core_layers.Flatten())
 
 	# add two fully connected layers
-	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200 if mode == "abs_atan2" else 200))#TODO Set to 300 again
+	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=250 if mode == "abs_atan2" else 200))#TODO Set to 300 again
 	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
 
 	# add output layer
