@@ -10,13 +10,13 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-folder_name = "gabor_lr0.1_absatan2_hd_gray_2cl"
+folder_name = "gabor_lr0.1_abs_hd_gray_2cl"
 weight_store_path = "weights/" + folder_name
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
 decay = 0.
 batchsize = 4
-epochs = 500
+epochs = 1000
 normalize = 2
 normalize_output = True
 resolution = (120,160)
@@ -35,7 +35,7 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/500") #TODO REMOVE ME ================================================================================== #
+#dataset_io.load_status(model, optimizer, weight_store_path + "/500") #TODO REMOVE ME ================================================================================== #
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
 if normalize == 1:
