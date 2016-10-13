@@ -101,11 +101,14 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		real_model = models.Sequential()
 		imag_model = models.Sequential()
 
+		train_gabor = True  # train whole network
+		#train_gabor = False # train only the layers after the gabor layer
+
 		# add convolution layers
-		real_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))])) # RELU
-		imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))])) # RELU
-		#real_model.add(conv_layers.Convolution2D(activation='linear', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))])) # linear
-		#imag_model.add(conv_layers.Convolution2D(activation='linear', trainable=False, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))])) # linear
+		real_model.add(conv_layers.Convolution2D(activation='relu', trainable=train_gabor, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))])) # RELU
+		imag_model.add(conv_layers.Convolution2D(activation='relu', trainable=train_gabor, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))])) # RELU
+		#real_model.add(conv_layers.Convolution2D(activation='linear', trainable=train_gabor, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[real_filters, np.zeros(len(m_filters))])) # linear
+		#imag_model.add(conv_layers.Convolution2D(activation='linear', trainable=train_gabor, input_shape=input_shape, nb_filter = len(m_filters), nb_row = nb_row, nb_col = nb_col, weights=[imag_filters, np.zeros(len(m_filters))])) # linear
 
 		# create merged model
 		gabor_merged_model = models.Sequential()
