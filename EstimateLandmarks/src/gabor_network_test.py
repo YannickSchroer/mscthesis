@@ -8,16 +8,22 @@ import dataset_io
 import helpers
 import visualize
 
-data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
-weight_load_path = "weights/gabor_lr0.1_sqrt_16_09_08_zappa"
+training = False
+
+data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv" if training else "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
+folder_name = "gabor_lr0.1_absatan2_hd_gray_noconv"
+weight_load_path = "weights/" + folder_name
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0
 decay = 0
 batchsize = 4
 normalize = 2
 normalize_output = True
-resolution = (96,128)
-grayscale = False
+#resolution = (96,128)
+resolution = (120,160)
+grayscale = True
+mode = "absatan2"
+add_conv2 = False
 
 # load gabor filters
 try:
@@ -27,7 +33,7 @@ except IOError:
 	print('Error while loading gabor filters')
 
 # build model
-model, optimizer = nn.build_gabor_model(gabor_filters, learningrate = learningrate, decay = decay, mode="atan2", add_conv2=False)
+model, optimizer = nn.build_gabor_model(gabor_filters, input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
 dataset_io.load_status(model, optimizer, weight_load_path + "/1000")
@@ -44,7 +50,7 @@ else:
 x_test, y_test, image_list, original_resolution = dataset_io.read_data(data_path, resolution, normalize=normalize, grayscale=grayscale, return_original_resolution=True, return_image_properties=True)
 nb_labels = 30
 max_dim = np.max(original_resolution)
-expanded_x_test = [x_test,x_test,x_test,x_test,x_test,x_test,x_test,x_test,x_test,x_test]
+expanded_x_test = [x_test for i in range(10)]
 
 # normalize output
 if normalize_output:
@@ -58,10 +64,12 @@ print('Test score:', score)
 print('Test score in pixels:', helpers.loss_to_pixel(score, np.max(resolution)))
 
 # predict
+print('Predict landmarks')
 predictions = model.predict(expanded_x_test, batchsize)
 
 if normalize_output:
 	predictions *= max_dim
 	y_test *= max_dim
 
-visualize.visualize_predictions(image_list, predictions, y_test, crosssize=5, predsave = "visualizations/gabor_lr0.1_sqrt_16_09_08_zappa/test", predshow=False, color_pred = (255,255,255), color_true=(0,0,0))
+print('Visualize landmarks')
+visualize.visualize_predictions(image_list, predictions, y_test, crosssize=5, predsave = "visualizations/" + folder_name + ("/train_1000" if training else "/test_1000"), predshow=False)
