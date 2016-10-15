@@ -10,7 +10,7 @@ import custom_callbacks
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-folder_name = "gabor_lr0.1_atan2_hd_gray_2cl_complete"
+folder_name = "gabor_lr0.1_atan2_hd_gray_2cl_complete_cuda01"
 weight_store_path = "weights/" + folder_name
 gabor_file = "data/gabor/gabor_filters.dat"
 learningrate = 0.1
@@ -35,7 +35,8 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/1500") # LOAD =========================================================================
+dataset_io.load_status(model, optimizer, weight_store_path + "/2000") # LOAD =========================================================================
+
 #dataset_io.load_status(model, optimizer, "weights/gabor_lr0.1_atan2_hd_gray_2cl/1000") # LOAD BEST GABOR NETWORK
 
 # Print from where the images are loaded, to which resolution they are scaled and whether they are normalized
@@ -72,7 +73,7 @@ callbacks.append(loss_callback)
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
 # save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/2000")
+dataset_io.store_status(model, optimizer, weight_store_path + "/2500")
 
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
@@ -90,5 +91,5 @@ for l in loss_callback.loss_history:
 	result_string += str(l) + ","
 result_string = result_string[:-1] + "\n"
 
-with open("results/" + folder_name + "/results_2000.dat", "w") as loss_file:
+with open("results/" + folder_name + "/results_2500.dat", "w") as loss_file:
 		loss_file.write(result_string)

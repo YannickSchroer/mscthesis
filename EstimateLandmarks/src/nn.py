@@ -166,8 +166,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	# add additional convolutional layers
 	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3)) # "normal" conv
 	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=7, nb_row=7)) # larger conv
-	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=15, nb_row=15)) # 2cl
-	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=24, nb_col=9, nb_row=9)) # 2cl
+	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=15, nb_row=15)) # 2cl
+	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=24, nb_col=9, nb_row=9)) # 2cl
 	if add_conv2:	
 		merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 		merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
