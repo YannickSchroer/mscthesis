@@ -1,8 +1,8 @@
 \begin{figure}[htbp]
 	\centering
 	\begin{tikzpicture}[scale=0.9,every path/.style={>=latex}]
-		\node (layeri) at (2.5,8) {Layer i};
-		\node (layeri) at (9.5,7) {Layer i+1};
+		\node (layeri) at (2.5,9) {Layer i};
+		\node (layeri) at (9.5,8) {Layer i+1};
      	
      	% draw background for filter
      	\draw[fill=pink] (2.5,2.5) rectangle (5.5,-0.5);
@@ -15,7 +15,7 @@
      	% draw layer 1
      	\foreach \x in {0,...,5}
      	{
-     		\foreach \y in {0,...,7}
+     		\foreach \y in {0,...,8}
      		{
      			\node(1-\x-\y) at (\x,\y) [circle,draw,minimum size=0.4cm] {};
      		}
@@ -24,7 +24,7 @@
      	% draw layer 2
      	\foreach \x in {1,...,4}
      	{
-     		\foreach \y in {1,...,6}
+     		\foreach \y in {1,...,7}
      		{
      			\node(2-\x-\y) at (\x + 7,\y) [circle,draw,minimum size=0.4cm] {};
      		}

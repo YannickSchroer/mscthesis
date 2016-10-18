@@ -1,0 +1,12 @@
+\begin{figure}[htbp]
+\centering
+	\begin{tikzpicture}[xscale=1.2, every path/.style={>=latex}]
+	\node (N1) at (0,0) [circle,draw,minimum size=1cm] {N1};
+	\node (N2) at (3,0) [circle,draw,minimum size=1cm] {N2};
+	\draw[->] (N2) to (4.9,0);
+	\draw[->] (-2,0.) to (N1);
+	\draw[->] (N1) to node[above]{weight} (N2);
+	\end{tikzpicture}
+\caption{The complicated natural neurons' mechanisms are replaced by a weight}
+\label{fig:two_neurons_weight}
+\end{figure}

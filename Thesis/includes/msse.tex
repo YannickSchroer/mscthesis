@@ -1,0 +1,42 @@
+\begin{figure}[htbp]
+	\centering
+	
+	% landmark-wise distance
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=0.85,every path/.style={>=latex}]
+			% draw grid
+			\draw (0.5,0.5) grid (8.5,4.5);
+		
+			% draw nodes
+			\node (E_true) at (3,2) [draw,circle,fill=AI-BLUE] {};
+			\node (E_pred) at (6,3) [draw,circle,fill=yellow] {};
+		
+			% draw arrows
+			\draw[<->,line width=1.5] (E_true) to (E_pred);
+		\end{tikzpicture}
+		\caption{Landmark-wise}
+		\label{fig:msse_landmarkwise}
+	\end{subfigure}
+	% coordinate-wise distance
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=0.85,every path/.style={>=latex}]
+			% draw grid
+			\draw (0.5,0.5) grid (8.5,4.5);
+		
+			% draw nodes
+			\node (M_true) at (3,2) [draw,circle,fill=AI-BLUE] {};
+			\node (M_pred) at (6,3) [draw,circle,fill=yellow] {};
+
+			% draw arrows
+			\draw[<->,line width=1.5] (M_true) to (6,2);
+			\draw[<->,line width=1.5] (6,2) to (M_pred);
+		\end{tikzpicture}
+		\caption{Coordinate-wise}
+		\label{fig:msse_coordinatewise}
+	\end{subfigure}
+	
+	\caption{Two different distance measures for calculating the \ac{MSSE}}
+	\label{fig:msse}
+\end{figure}

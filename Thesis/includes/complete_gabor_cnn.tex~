@@ -1,0 +1,48 @@
+\begin{figure}[htbp]
+	\centering
+	\newcommand\sfCompGaborCNN{0.85}
+	\newcommand\gridnode[5]{
+		\node (#1) at (#2 + #4 / 2,#3 + #5 / 2) [minimum width=#4cm * \sfCompGaborCNN,minimum height=#5cm * \sfCompGaborCNN] {};
+		\draw[step=0.1] (#2 - 0.001,#3 - 0.001) grid (#2+#4 + 0.001,#3+#5 + 0.001);	
+	}
+	\newcommand\mycm{cm * \sfCompGaborCNN}
+	\begin{tikzpicture}[scale=\sfCompGaborCNN,every path/.style={>=latex}]
+		\node at (-8.2,0) {};
+
+		% draw input image
+		\gridnode{inputimage}{-0.7}{1}{1.5}{2}
+		\node at (-2.5,2.) {Input image};
+		
+		% draw gabor layer
+		\node (gaborlayer) at (0.05,0) [draw,rectangle,minimum width=8\mycm, minimum height=1.\mycm] {Gabor layer};
+		\draw[->] (inputimage.south) to (gaborlayer.north);
+	
+		% draw convolutional layer
+		\node (cl1) at (0.05,-1.5) [draw,rectangle, minimum width=8\mycm, minimum height=1\mycm] {Convolutional layer};
+		\draw[->] (gaborlayer.south) to (cl1);
+		
+		% draw max pooling and second convolutional layer
+		\node (or) [draw,diamond,aspect=1] at (0.05, -3) {or};
+		\draw[->] (cl1.south) to (or);
+		\node (mpl) at (5,-3.0) [draw,rectangle, minimum width=7\mycm, minimum height=0.9\mycm] {Max pooling layer};
+		\draw[->] (or) to (mpl);
+		\node (cl2) at (5,-4.5) [draw,rectangle, minimum width=7\mycm, minimum height=0.9\mycm] {Convolutional layer};
+		\draw[->] (mpl) to (cl2);
+		
+		% draw fully connected layer
+		\node (fcl1) at (0.05,-6.0) [draw,rectangle, minimum width=8\mycm, minimum height=1\mycm] {Fully connected layer 1};
+		%\draw[->] (or.west) -- ++(-2,0) to (-2.4,-5.5);
+		\draw[->] (or.west) -- ++(-2,0) to (-2.55,-5.5);
+		\draw[->] (cl2) |- (fcl1);
+		
+		% draw second fully connected layer
+		\node (fcl2) at (0.05,-7.5) [draw,rectangle, minimum width=8\mycm, minimum height=1\mycm] {Fully connected layer 2};
+		\draw[->] (fcl1) to (fcl2);
+		
+		% draw output layer
+		\node (ol) at (0.05,-9.0) [draw,rectangle, minimum width=7\mycm, minimum height=1\mycm] {Output layer};
+		\draw[->] (fcl2) to (ol);
+	\end{tikzpicture}
+	\caption{A complete Gabor \ac{CNN}}
+	\label{fig:complete_gabor_cnn}
+\end{figure}

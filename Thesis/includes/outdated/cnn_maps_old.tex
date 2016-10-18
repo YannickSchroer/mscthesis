@@ -1,0 +1,29 @@
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.9,every path/.style={>=latex}]
+		% draw input layer
+		\draw (4,12) rectangle (10,10) node[midway]{Input map};
+		
+		% draw filters
+		\draw (2.5,7.5) rectangle (3.5,8.5) node[midway]{F1};
+		\draw (6.5,7.5) rectangle (7.5,8.5) node[midway]{F2};
+		\draw (10.5,7.5) rectangle (11.5,8.5) node[midway]{F3};
+		
+		% draw connections from input layer to filters
+		\draw[->] (7,10) to (3,8.5);
+		\draw[->] (7,10) to (7,8.5);
+		\draw[->] (7,10) to (11,8.5);
+		
+		% draw output maps
+		\draw (0,4.5) rectangle (4,6) node[midway]{Map 1};
+		\draw (5,4.5) rectangle (9,6) node[midway]{Map 2};
+		\draw (10,4.5) rectangle (14,6) node[midway]{Map 3};
+
+		% draw connections from the filters to the output maps
+		\draw[->] (3,7.5) to (2,6);
+		\draw[->] (7,7.5) to (7,6);
+		\draw[->] (11,7.5) to (12,6);
+	\end{tikzpicture}
+	\caption{Output maps of a convolutional layer}
+	\label{fig:cnn_maps}
+\end{figure}
