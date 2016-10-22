@@ -74,6 +74,36 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 
 	return model, optimizer
 
+def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., decay = 0.0, nesterov=False, initialization="glorot_normal", activation_function="sigmoid", max_pooling=True):
+	cnn_model = models.Sequential()
+	
+	# add convolution2D and maxpooling2D layers
+	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=3, nb_row=3))
+	if max_pooling:
+		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=2, nb_row=2))
+	if max_pooling:
+		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=2, nb_row=2))
+	if max_pooling:
+		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+
+	# flatten model
+	cnn_model.add(core_layers.Flatten())
+	
+	# add fully connected layers
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=300))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=200))
+
+	# add output layer
+	cnn_model.add(core_layers.Dense(activation="linear", init=initialization, output_dim=30))
+
+	optimizer = optimizers.SGD(lr=learningrate, momentum=momentum, decay=decay, nesterov=nesterov)
+	cnn_model.compile(loss='mse', optimizer=optimizer)
+
+	return cnn_model, optimizer
+
+
 def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01, momentum=0., decay = 0.0, nesterov=False, mode="abs", add_conv2=True):
 	'''This method constructs a model with gabor convolutional layers and subsequent fully connected layers'''
 
@@ -166,8 +196,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	# add additional convolutional layers
 	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3)) # "normal" conv
 	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=7, nb_row=7)) # larger conv
-	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=15, nb_row=15)) # 2cl
-	#merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=24, nb_col=9, nb_row=9)) # 2cl
+	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=15, nb_row=15)) # 2cl
+	merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=24, nb_col=9, nb_row=9)) # 2cl
 	if add_conv2:	
 		merged_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 		merged_model.add(conv_layers.Convolution2D(activation="relu", init="glorot_normal", nb_filter=32, nb_col=3, nb_row=3))
@@ -176,8 +206,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 	merged_model.add(core_layers.Flatten())
 
 	# add two fully connected layers
-	#merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=300)) # at least one convolutional layer
-	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=250)) # noconv
+	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=300)) # at least one convolutional layer
+	#merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=250)) # noconv
 	merged_model.add(core_layers.Dense(activation="sigmoid", init="glorot_normal", output_dim=200))
 
 	# add output layer
