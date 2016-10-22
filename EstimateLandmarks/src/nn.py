@@ -79,8 +79,7 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	
 	# add convolution2D and maxpooling2D layers
 	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=3, nb_row=3))
-	if max_pooling:
-		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+	cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=2, nb_row=2))
 	if max_pooling:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
