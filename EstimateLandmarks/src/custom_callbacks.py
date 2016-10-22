@@ -39,6 +39,24 @@ class RecordLoss(keras.callbacks.Callback):
 	def on_epoch_end(self, epoch, logs={}):
 		self.loss_history[epoch], self.latest_losses = self.calculate_loss()
 
+class RecordLossCNN(keras.callbacks.Callback):
+	'''This class is a callback, which computes and saves the loss after each epoch'''
+	def __init__(self, nb_epochs, nb_labels, data_orig, labels_orig, resolution, model):
+		self.nb_epochs = nb_epochs
+		self.nb_labels = nb_labels
+		self.data = data_orig
+		self.labels = labels_orig
+		self.resolution = resolution
+		self.model = model
+		self.loss_history = np.empty((self.nb_epochs))
+
+	def calculate_loss(self):
+		'''This method calculates the mean loss and the individual losses.'''
+		return self.model.evaluate(self.data, self.labels, 1, verbose=False)
+
+	def on_epoch_end(self, epoch, logs={}):
+		self.loss_history[epoch] = self.calculate_loss()
+
 class RecordLossGabor(keras.callbacks.Callback):
 	'''This class is a callback, which computes and saves the loss after each epoch'''
 	def __init__(self, nb_epochs, nb_labels, data_orig, labels_orig, resolution, model):
@@ -150,14 +168,15 @@ class Distortions(keras.callbacks.Callback):
 	def on_epoch_begin(self, epoch, logs={}):
 		'''This method is called at the beginning of each epoch. Images and labels are shifted, rotated and scaled.'''
 		# create random values for shift, rotation and scaling
-		#shift_values = np.random.uniform(- 0.1 * self.x.shape[1], 0.1 * self.x.shape[2], (self.number_of_images))
-		#rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
-		#scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
-
-		shift_values_x = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[1], (self.number_of_images))
-		shift_values_y = np.random.uniform(- 0.2 * self.x.shape[2], 0.2 * self.x.shape[2], (self.number_of_images))
+		shift_values_x = np.random.uniform(- 0.1 * self.x.shape[1], 0.1 * self.x.shape[1], (self.number_of_images))
+		shift_values_y = np.random.uniform(- 0.1 * self.x.shape[2], 0.1 * self.x.shape[2], (self.number_of_images))
 		rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
-		scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
+		scale_factors = np.random.uniform(0.9, 1.1, (self.number_of_images))
+
+		#shift_values_x = np.random.uniform(- 0.2 * self.x.shape[1], 0.2 * self.x.shape[1], (self.number_of_images))
+		#shift_values_y = np.random.uniform(- 0.2 * self.x.shape[2], 0.2 * self.x.shape[2], (self.number_of_images))
+		#rotate_angles = np.random.uniform(-5., 5., (self.number_of_images))
+		#scale_factors = np.random.uniform(0.95, 1.05, (self.number_of_images))
 
 		# iterate over all images and transform them
 		for img_id in range(self.number_of_images):
