@@ -14,7 +14,7 @@ for learningrate in [0.2]:
 	# define variables
 	data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
 	folder_name = "cnn/cnn_nomaxpooling" + "_lr" + str(learningrate)
-	epochs = 1
+	epochs = 400
 	load_epoch = 0
 	save_epoch = load_epoch + epochs
 	weight_store_path = "weights/" + folder_name
