@@ -7,20 +7,24 @@ import nn
 import dataset_io
 import custom_callbacks
 
+#for momentum in [0.1,0.5,0.9]:
 for learningrate in [0.2]:
 	# initialize result string
 	result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
 	# define variables
+	# learningrate = 0.2
+	momentum = 0
+
 	data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-	folder_name = "cnn/cnn_nomaxpooling" + "_lr" + str(learningrate)
+	folder_name = "cnn/cnn_batchsize8_lr" + str(learningrate)
 	epochs = 400
 	load_epoch = 0
 	save_epoch = load_epoch + epochs
 	weight_store_path = "weights/" + folder_name
 	result_store_path = "results/" + folder_name
+	batchsize = 8
 	decay = 0.
-	batchsize = 4
 	normalize = 2
 	normalize_output = True
 	resolution = (120,160)
@@ -36,7 +40,7 @@ for learningrate in [0.2]:
 		os.makedirs(result_store_path)
 
 	# build model
-	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, initialization=initialization, activation_function=activation_function, max_pooling=max_pooling)
+	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, momentum=momentum, decay = decay, initialization=initialization, activation_function=activation_function, max_pooling=max_pooling)
 
 	# Load status
 	if load_epoch > 0:
@@ -85,6 +89,7 @@ for learningrate in [0.2]:
 	result_string += "grayscale: " + str(grayscale) + "\n"
 	result_string += "initialization: " + initialization + "\n"
 	result_string += "activation function: " + activation_function + "\n"
+	result_string += "batch size: " + str(batchsize) + "\n"
 	result_string += "max pooling: " + str(max_pooling) + "\n"
 	result_string += "learningrate: " + str(learningrate) + "\n"
 	result_string += "decay: " + str(decay) + "\n"
