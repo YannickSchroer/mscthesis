@@ -74,17 +74,18 @@ def build_model_to_layout(layout, learningrate = 0.01, momentum=0.9, decay = 0.0
 
 	return model, optimizer
 
-def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., decay = 0.0, nesterov=False, initialization="glorot_normal", activation_function="sigmoid", max_pooling=True):
+def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., decay = 0.0, nesterov=False, initialization="glorot_normal", activation_function="sigmoid", nb_max_pooling=3):
 	cnn_model = models.Sequential()
 	
 	# add convolution2D and maxpooling2D layers
 	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=3, nb_row=3))
-	cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
+	if nb_max_pooling > 0:
+		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=2, nb_row=2))
-	if max_pooling:
+	if nb_max_pooling > 1:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=2, nb_row=2))
-	if max_pooling:
+	if nb_max_pooling > 2:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 
 	# flatten model

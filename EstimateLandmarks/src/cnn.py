@@ -17,13 +17,13 @@ for learningrate in [0.2]:
 	momentum = 0
 
 	data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-	folder_name = "cnn/cnn_batchsize8_lr" + str(learningrate)
+	folder_name = "cnn/cnn_2maxpooling_" + str(learningrate)
 	epochs = 400
 	load_epoch = 0
 	save_epoch = load_epoch + epochs
 	weight_store_path = "weights/" + folder_name
 	result_store_path = "results/" + folder_name
-	batchsize = 8
+	batchsize = 4
 	decay = 0.
 	normalize = 2
 	normalize_output = True
@@ -31,7 +31,7 @@ for learningrate in [0.2]:
 	grayscale = False
 	initialization = "glorot_normal"
 	activation_function = "sigmoid"
-	max_pooling = True
+	nb_max_pooling = 2
 
 	# create folders for weights and results if they do not exist
 	if not os.path.isdir(weight_store_path):
@@ -40,7 +40,10 @@ for learningrate in [0.2]:
 		os.makedirs(result_store_path)
 
 	# build model
-	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, momentum=momentum, decay = decay, initialization=initialization, activation_function=activation_function, max_pooling=max_pooling)
+	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, momentum=momentum, decay = decay, initialization=initialization, activation_function=activation_function, nb_max_pooling=nb_max_pooling)
+
+	print(model.summary())
+	exit()
 
 	# Load status
 	if load_epoch > 0:
