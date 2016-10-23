@@ -31,7 +31,7 @@ for learningrate in [0.2]:
 	grayscale = False
 	initialization = "glorot_normal"
 	activation_function = "sigmoid"
-	max_pooling = False
+	max_pooling = True
 
 	# create folders for weights and results if they do not exist
 	if not os.path.isdir(weight_store_path):
