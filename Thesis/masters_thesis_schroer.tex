@@ -197,11 +197,11 @@ After the short introduction in this chapter, chapter \myref{sec:anns} provides 
 
 Natural neurons are the information transmitting and processing units of the brain of animate beings such as the human. While there are various types of natural neurons, which function in different ways, artificial neurons as their mathematical counterpart are reduced to the basic functionality. Natural neurons receive and send signals from and to other neurons via synapses. A synapse is a link between the spike emitting axon of the pre-synaptic neuron and the spike receiving dendrites or soma of the post-synaptic neuron. Each synapse has a certain strength, according to which it increases or decreases the post-synaptic neuron's activation, depending on whether it is an excitatory synapse or an inhibitory synapse. Figure \ref{fig:two_connected_neurons} illustrates two connected neurons:
 
-\input{includes/two_connected_neurons}
+\input{includes/figures/two_connected_neurons}
 \vspace{-0.2cm}
 In artificial neurons complicated electrical or chemical transmitting mechanisms consisting of the axon of the spiking neuron, the dendrite or soma of the receiving neuron and the synapse and its strength in between are replaced by a single number, the so called weight, which determines the strength of the synapse. If it is positive, the synapse or connection is excitatory, otherwise it is inhibitory. Figure \ref{fig:two_neurons_weight} shows two connected artificial neurons.
 
-\input{includes/two_neurons_weight}
+\input{includes/figures/two_neurons_weight}
 
  Unlike natural neurons, which receive spikes and fire (emit a spike) at discrete points in time, the membrane potential or activation of artificial neurons is averaged over time and represented by a single scalar value for simplicity reasons. The averaging of time allows for a time-independent mathematical function, whose value can be calculated without looking at each neuron at numerous points in time to find out its current activation. Formula \eqref{eq:mathematical_neuron} shows how the mathematical formula of an artificial neuron looks like so far:
 \begin{align}
@@ -219,7 +219,7 @@ The most well-known activation function is probably the sigmoid (or sigmoidal) f
 \sigma(a) = \frac{1}{1 + e^{-a}}
 \end{align}
 
-\input{includes/sigmoid}
+\input{includes/figures/sigmoid}
 
 If the membrane potential $a$ is large, $e^{-a}$ tends to zero, so the output of the activation function $\sigma(a)$ is close to 1. If $a$ is very far in the negative area, $e^{-a}$ tends to $+\infty$ and thus $\sigma(a)$ is almost $0$. Summarized, a high (positive) membrane potential leads to a large output and a negative membrane potential leads to nearly no output. To individualize the activation function to a specific task, the formula can be extended so that the activation function becomes steeper. Formula \eqref{eg:steeper_sigmoid} shows the extended form:
 \begin{align}
@@ -229,7 +229,7 @@ If the membrane potential $a$ is large, $e^{-a}$ tends to zero, so the output of
 
 The parameter $\beta$ can be used to make the function steeper or less steep. $u_0$, however, can be used to shift the activation function to the left or to the right. Figure \ref{fig:modified_sigmoid} shows the sigmoid function with two different values for $\beta$:
 
-\input{includes/modified_sigmoid}
+\input{includes/figures/modified_sigmoid}
 
 Another variant of the sigmoidal function is the hyperbolic tangent $\tanh(a)$, which is equivalent to the sigmoidal function except for some linear transformations.
 Including the activation function in our model, the formula for an artificial neuron changes as shown in equation \eqref{eq:mathematical_neuron_with_sigmoid}.
@@ -246,7 +246,7 @@ By adding the activation function, the model becomes non-linear. A sufficiently 
 
 Figure \ref{fig:relu} shows the plot of this activation function.
 
-\input{includes/relu}
+\input{includes/figures/relu}
 
 According to \cite{dsrnn}, the \ac{ReLU} is not only faster than the sigmoidal activation function and the hyperbolic tangent activation function, but also biologically more plausible. One reason for its plausibility is its linearity. Figure \ref{fig:biological_activation_function} shows an activation function, which is constructed on the basis of biological data. The area enclosed by the red rectangle resembles the shape of the \ac{ReLU} presented in figure \ref{fig:relu}.
 
@@ -267,7 +267,7 @@ Being biologically plausible is not necessarily essential to construct a well pe
 \label{subsec:feed_forward_neural_networks}
 
 The still most common \acp{ANN} are feed-forward neural networks. The neurons in a feed-forward neural network are usually organized in consecutive layers, which propagate the information in only one direction through the network. Figure \ref{fig:ffnn} shows a fully connected feed-forward network with one input layer, one output layer and two layers in between, which are called hidden layers.
-\input{includes/ffnn}
+\input{includes/figures/ffnn}
 
 As illustrated by the arrows in figure \ref{fig:ffnn}, the information is passed from the leftmost neurons in the input layer to the first hidden layer, then to the second hidden layer and finally to the output layer on the right. The number of neurons in the input layer has to correspond to the dimensionality of the input space. The number of neurons in the output layer is determined by the number of classes in a classification task or the number of desired outputs in a regression task respectively. Hence, these parameters are clearly defined by the problem and are not subject to the optimization process. On the other hand, the number of the neurons in the hidden layers and the number of the hidden layers itself depends on the complexity of the task, which shall be solved by the network. For easily solvable problems only a few neurons may suffice, while difficult tasks can require several hundred or thousand neurons. Figuring out an appropriate network architecture is a task, whose difficulty should be not underestimated.\\
 The above depicted network is called fully-connected, because each neuron in layer $i$ has a connection to each neuron in layer $i + 1$. Note that there are no connections within one single layer. If there were also connections in the other direction, the network would be a \ac{RNN}. Although there are many interesting problems to which \acp{RNN} could be applied to, \acp{RNN} are much less prominent in Machine Learning, because there are very few well-established training algorithms. For feed-forward networks, however, exist reliable training algorithms. The most used of them is called Backpropagation. Backpropagation profits from the observation that a feed-forward \ac{ANN} is nothing more than a mathematical function, which fulfills the requirements for being differentiable. While the sigmoidal activation function and the hyperbolic tangent activation function are differentiable, the \ac{ReLU} is a bit problematic, because it is not differentiable at $0$. This problem can be eluded by setting the gradient to $0$ at this position. To understand how Backpropagation works, it is necessary to introduce an error function. The formula for a very common error function, the \ac{MSSE}, is given in equation \eqref{eq:msse}.
@@ -288,14 +288,14 @@ With $n_i$ as number of neurons in layer $i$, there are $n_i \cdot n_{i+1}$ conn
 \label{subsubsec:convolutionallayer}
 
 The key idea is to replace some of the fully connected layers at the beginning of the network with two-dimensional convolutional layers. A very important property of these layers is that they use only little weight patches, which are called filters, for the whole layer instead of connecting each neuron of one layer with all neurons of the succeeding layer. This way many connections can be omitted, resulting in a shorter training time. Figure \ref{fig:centered_filter} shows how one filter in a convolutional layer functions in general.
-\input{includes/functioning_cnn}
+\input{includes/figures/functioning_cnn}
 The filter in this example has a size of $3\times 3$ and is emphasized by the 9 purple circles and by the light red background. The filter in the illustration is currently centered on the fifth neuron from the left and second from the bottom. The multiplication symbol $*$ in the small rectangle in the top right corner of the filter indicates that the activation value of each neuron, which is covered by the filter, is multiplied with the weight of the filter at the corresponding position. The resulting products are summed up to a single value, which is inserted in the activation function and finally becomes the activation of the neuron in layer $i+1$. This is done not only once, but the filter is centered on each neuron of layer $i$ in order to produce the activations of the neurons in layer $i+1$. Using this method a drastic reduction of weights is achieved by replacing the $n_i \cdot n_{i+1}$ weights, which would be required for a fully connected \ac{ANN}, with a constant number of weights, which is independent of the number of neurons in the two connected layers. The dimensionality of layer $i+1$ is slightly reduced by $(h - 1) / 2$ neurons in horizontal direction and $(v - 1)/2$ neurons in vertical direction (with $h$ = filter height and $v$ = filter width), because the filter is not centered on the outermost neurons. Edge handling techniques known from digital image processing like wrap-around or zero-padding are usually not used. The strong resemblance of the mathematical concept of convolution with the way how the filter's weights are multiplied with the activation values of the neurons is the origin of the name Convolutional Neural Network.
 
 \subsubsection{Maps}
 \label{subsubsec:maps}
 
 Contrary to what has been suggested so far, most layers in a \ac{CNN} do not consist of only one two-dimensional array but several ones, which are called maps. A convolutional layer takes all the maps of its preceding layer as input and produces a certain amount of output maps. Figure \ref{fig:cnn_maps} illustrates in detail how such a layer works. The following lines are inspired by the explanations in \cite{gtsrb}.
-\input{includes/cnn_maps}
+\input{includes/figures/cnn_maps}
 
 While the very first layer of a \ac{CNN} often works on exactly three maps, each of which containing the information of one of the three color channels of an \ac{RGB} image, the convolutional layer used in the example network depicted in figure \ref{fig:cnn_maps} has only two input maps for display reasons. The number of the output maps can be chosen arbitrarily, independent of the number of the input maps. The number of the filters, on the other hand, is determined by the product of the number of the input maps and the number of the desired output maps. Hence, the network given in the illustration has exactly $2 \cdot 3 = 6$ filters. The formula for output map $O_j$ is given in equation \eqref{eq:output_map} with $N$ as number of input maps and $I_i$ as $i$-th input map.
 \begin{align}
@@ -314,7 +314,7 @@ To determine the total number of free parameters in a convolutional layer, the n
 \label{subsubsec:maxpoolinglayer}
 
 Next to the convolutional layer there is another layer, which is normally part of a \ac{CNN}, namely the max pooling layer. This sort of layer is used to increase the translation invariance and thus to decrease the locality of the network by combining a patch of neurons in an input map to only one neuron in an output map. This is done by choosing the maximum activation of the contemplated neurons as output. It is very common to use a $2\times 2$ patch, but also larger patches are possible. The considered neuron patches in the input map may overlap, but usually only distinct patches are regarded. Figure \ref{fig:max_pooling} illustrates this concept for a single max pooling operation on a batch of 4 neurons without overlap.
-\input{includes/max_pooling}
+\input{includes/figures/max_pooling}
 As depicted in the figure, max pooling drastically decreases the number of neurons by a factor $h$ in horizontal direction and a factor $v$ in vertical direction, given a max pooling patch size of $h\times v$ and no overlap. As opposed to the convolutional layers, the max pooling layer neither combines several input maps into one output map nor produces more output maps than input maps, but generates exactly one output map for each input map instead. Thus, a max pooling layer can be used for complexity reductions only.\\
 While the early layers in the network respond to basic features like edges and corners, the later layers in the network, which survey a relatively large area of the image because of the max pooling operation, respond to more complex compound features without having knowledge of the precise locations of all their contributing individual parts. This behavior is desirable particularly for classification tasks, because it is often not necessary to know in detail where the features are located in the image. In regression tasks, however, precise knowledge about the features' position is very valuable, so the use of max pooling should be left out or at least be limited to a certain degree.\\%TODO Add source
 Most \acp{CNN} use convolutional layers and max pooling layers alternately, producing more and more high-level feature extractors with increasing depth of the network. After the convolutional and max pooling layers a small number of fully connected layers follows to connect the responses of the high-level feature extractors logically in order to produce reasonable predictions. The first fully connected layer has one connection to each neuron of each map of the last preceding layer. Since \acp{CNN} often possess very many consecutive layers, the network becomes very deep. This is where the recently often used terms \q{Deep Learning} and \q{Deep Convolutional Network} originate from. The layers introduced in this subsection are important components of the \acp{CNN} which are used in this thesis in order to construct an as good as possible estimator for facial landmarks in images of human faces.
@@ -474,7 +474,7 @@ Even if the considerations in the mentioned paper assume the uniform distributio
 \subsection{Error Function}
 
 All examined networks use the \ac{MSSE}, which was already explained in chapter \myref{msse} and whose formula is given in equation \eqref{eq:msse}. However, it is necessary to explain in detail how the error is calculated, because at the first glance there are at least two different theoretical possibilities. The probably most intuitive way to calculate the error is shown in figure \ref{fig:msse_landmarkwise}.
-\input{includes/msse}
+\input{includes/figures/msse}
 This landmark-wise method adds up the squared Euclidean distances between the landmarks predicted by the network (yellow) and the true landmarks (blue). In this scenario the network seems to "know" that the $x$-coordinate and the $y$-coordinate of one landmark constitute a unit. A second possibility is shown in figure \ref{fig:msse_coordinatewise}, where the $x$-coordinate and the $y$-coordinate of a landmark are considered as two independent output values. Here both the horizontal and the vertical deviation are calculated and squared separately. Intuitively, the network should not treat a pair containing the two outputs for one landmark's coordinates differently than a pair of two arbitrarily chosen output values. However, the value produced by the error function does not change at all, no matter which way to calculate it may be chosen. This is proven by the equations \eqref{eq:equal_msse_start} - \eqref{eq:equal_msse_end}. Note that $\l_x$ is the difference between the true and the predicted $x$ value of landmark $l$.
 \begin{align}
 \label{eq:equal_msse_start}
@@ -483,15 +483,15 @@ This landmark-wise method adds up the squared Euclidean distances between the la
 \label{eq:equal_msse_end}
 \equiv \hspace{1.95cm} a_x^2 + a_y^2 + b_x^2 + b_y^2 + c_x^2 + c_y^2 &= a_x^2 + a_y^2 + b_x^2 + b_y^2 + c_x^2 + c_y^2
 \end{align}
-Hence, both methods are completely equivalent and since the coordinate-wise error function is easier to implement, it was used for all networks in the scope of this thesis.
-
-The definition of the error function serves its mathematical and computational purpose, but the resulting error value is not very intuitive for human observers due to the normalization of the labels to the unit interval. The standard way of transforming the error value into a more intuitively comprehensible value is compute its square root and to multiply it with the resolution of the largest dimension of the training images. The result of this calculation is the an approximation of the average distance in pixels of the predicted labels from the true labels.
+Hence, both methods are completely equivalent and since the coordinate-wise error function is easier to implement, it was used for all networks in the scope of this thesis.\\
+The definition of the error function serves its mathematical and computational purpose, but the resulting error value is not very intuitive for human observers due to the normalization of the labels to the unit interval. The standard way of transforming the error value into a more intuitively comprehensible value is to compute its square root and to multiply it with the resolution of the largest dimension of the training images. The result of this calculation is an approximation of the average distance in pixels of the predicted labels from the true labels.
 
 \subsection{Conventionally Trained CNN}
+\label{subsec:conventiallytrainedcnn}
 
 During the initial phase of this thesis many classical \acp{CNN} with various parameter settings have been constructed. While the purpose of this subsection is to describe the general structure of these \acp{CNN} only, the results chapter will give insight to the detailed para\-meter settings for each tested network.\\
 Since it is difficult to find a suitable network architecture offhand without further knowledge or intuition, especially the networks in the early stages of this thesis are very similar to those, which were used in Daniel Nouri's tutorial \cite{nouri-tutorial}. Figure \ref{fig:example_cnn} shows a possible example network with 2 convolutional layers, each of which succeeded by a max pooling layer with a patch size of $2\times 2$. Before specifying the details of the network structure, it must be mentioned that for space saving reasons the depicted number of neurons does not correspond to the actually displayed number of neurons. In addition, the activation functions and biases were omitted for the sake of improved clarity. For the same reason there are only 2 convolutional layers instead of 3 like in \cite{nouri-tutorial}.
-\input{includes/example_cnn}\\
+\input{includes/figures/example_cnn}\\
 It is assumed that the network takes \ac{RGB} images, hence there are 3 input maps, one for each color channel. The first convolutional layer is supposed to produce 32 output maps, hence according to the explanations in chapter \myref{subsubsec:maps} there are 96 filters between the input layer and the first convolutional layer. As indicated in the figure, the resulting 32 output maps of the first convolutional layer are a bit smaller in both dimensions, because the edges of the input maps are not treated. The 32 output maps of the first convolutional layer constitute the input of the first max pooling layer, which reduces the dimensionality of the maps by a factor of 2 in both dimensions. The second convolutional layer generates 64 output maps, thus $32 \cdot 64 = 2048$ filters are necessary to execute the convolution operation. Also these 64 resulting slightly smaller maps are max pooled, yielding 64 significantly smaller maps. After the second max pooling operation, two fully connected layers follow. Each neuron in the 64 output maps of the second max pooling layer has a connection to each neuron in the first fully connected layer. Assuming a resolution of $22\times 30$ in the 64 max pooling maps and 500 neurons in the first fully connected layer, there are $22 \cdot 30 \cdot 64 \cdot 500 = 21.120.000$ connections, which have to be trained. The second fully layer in this example consists of 400 neurons, thus there are $500 \cdot 400 = 200.000$ connections between the 2 fully connected layers. The last layer of the network is the output layer, which has as many neurons as there exist desired output values. In the landmark estimation task examined in this thesis the number of output neurons equals 30, because the networks were usually trained to predict the $x$-coordinate and the $y$-coordinate of 15 landmarks.\\
 Even if the details will be different for each of the actually trained networks, which are presented in the results chapter, this example network should give a visual intuition for the qualitative structure of a \ac{CNN}. In the results chapter there will be detailed information about the used layer types, layer sizes, weight initializations, activation functions, learning rates and every other important parameter.
 
@@ -529,7 +529,7 @@ The filters depicted in the figure all have a size of $101 \times 101$. The size
 
 After creating the digital versions of the Gabor wavelets, they have to be incorporated in a \ac{CNN}. It was already mentioned that the filters of the first convolutional layer will be replaced with the Gabor wavelets. However, there are still many open questions about the detailed structure of this first layer, the way how to further process the responses of the wavelets and how to construct the overall structure of the \ac{CNN}. Firstly, the structure of the first convolutional layer, which will be called Gabor layer from now on, will be examined in detail. The Gabor layer itself actually consists of two layers, one of them containing the real parts and one of them the imaginary parts of the Gabor filters. The exact number of filters depends on whether color information is used or not. If the network relies on gray-values only, there are exactly 40 real filters and 40 imaginary filters (with $L = 8$ and $M = 5$). Figure \ref{fig:merge_real_imag} illustrates how the Gabor layer is organized.
 
-\input{includes/merge_real_imag}
+\input{includes/figures/merge_real_imag}
 
 The very top of the figure shows the input image, consisting of only one map due to the refusal of the color information. Below there are depicted four of the forty real filters on the left and four of the forty imaginary filters on the right. The input map is convolved with each of these 80 filters, resulting in 40 real output maps and 40 imaginary output maps. Then, these 80 output maps are inserted into an activation function like the \ac{ReLU}. Afterwards, the output map of the real filter and the output map of the imaginary filter, which originally belonged to one single Gabor filter, are merged as illustrated by the small rectangle containing the text \q{merge op}. The result of the individual merging operations are 40 output maps, which will become the input of a subsequent layer. If the color information were included into the calculation, there would be 3 input maps instead of 1. The only other difference is that 240 instead of 80 filters would be used. Since each color channel should be convolved with the same values, each of the 80 filters would be used 3 times. As illustrated by figure \myref{fig:cnn_maps}, the responses of the three filters would be added up and inserted into the activation function. Independent of whether the color information is used or not, there exists one bias value for each filter. These values were omitted in figure \ref{fig:merge_real_imag} in order to keep the figure as clearly arranged as possible.\\
 The figure only says \q{merge op} instead of describing the exact way how the merging is done, because there are several possibilities to combine the responses of the real and the imaginary filters. Two different operations were realized in the scope of this thesis, namely the absolute value and the phase. Both operations work element-wise, combining the activations of each neuron in the real filter's output and its corresponding neuron in the imaginary filter's output as shown in the equations \eqref{eq:abs} and \eqref{eq:atan2}.
@@ -541,17 +541,17 @@ a_m &= \operatorname{atan2}(a_i, a_r)
 \end{align}
 $a_m$ is the activation in the merged map, $a_r$ the real response and $a_i$ the imaginary response. The first method calculates the length of the vector $(a_r,a_i)$ in the complex plane, the second method calculates the angle between the positive half of the $x$-axis (here the imaginary axis) and the point $(a_i,a_r)$ in the complex plane. The absolute value reflects the strength of the response of the filters to the input image, i.e. the resemblance of the filters to the input. The phase, on the other hand, indicates the relative strength of the real response to the imaginary response. If the phase is close to $0$ or $\pi$ (or $0^\circ$ and $180^\circ$) the imaginary response is stronger than the real one. If the phase is close to $\frac{\pi}{2}$ or $\frac{3\pi}{2}$ (or $90^\circ$ or $270^\circ$) the real response is stronger than the imaginary response.\\
 Aside from choosing only one of these two methods, it is possible to profit from both approaches by using the absolute value and the phase. This is illustrated in figure \ref{fig:merge_abs_atan2}.
-\input{includes/merge_abs_atan2}
+\input{includes/figures/merge_abs_atan2}
 Initially, the Gabor layer explained above around figure \myref{fig:merge_real_imag} and the Gabor layer described here work in the same way. However, after applying the activation function to the output of the convolutions, the absolute value output map and the phase output map are calculated for each pair of real and imaginary response, resulting in 40 outputs maps for each merging operation and thus 80 output maps in total. Using this approach requires much more computation time, but promises better results, because much more information can be extracted from the given data.
 
 \subsubsection{A complete Gabor CNN}
 
 There are many possibilities to set up a network, which uses the information obtained by the convolution of the input images with the Gabor wavelets. When the first decision is made, to wit which version of the Gabor layer with which merging operation(s) is going to be used, one has to define the subsequent layers. Many network used during the training phase of this thesis define another convolutional layer as successor of the Gabor layer. This layer was followed by a max pooling layer and an additional convolutional layer in some of the networks. The last two layers before the output layer are two fully connected layers, which are destined to connect the output of the last convolutional layer logically. Chapter \myref{sec:results} will give detailed insight into the chosen parameter settings like the number of neurons and the activation function of each layer, whereas figure \ref{fig:complete_gabor_cnn} gives an overview of the general structure of the most examined Gabor \acp{CNN}.
-\input{includes/complete_gabor_cnn}\\
+\input{includes/figures/complete_gabor_cnn}\\
 One layer type, which was used in some networks, but which has not been presented so far and which is not depicted in the figure above, is the dropout layer. The purpose of this kind of layer, which was studied intensely by \cite{dropout}, is to avoid or at least to reduce overfitting to a certain degree by randomly setting a predefined percentage of a layer's neurons to $0$ before each update. Simply leaving out a certain subset of neurons during each update promises significant performance improvements, because the network is prevented from adapting the weights of a group of neurons too much in dependence on each other. This way the network is forced to consider each connection to some extent separately from the others and thus increasing its significance. Setting some activations to $0$ does not reject too much information, because the forward path is recalculated before each weight update, hence it is completely irrelevant for the current update step which activations were left during the previous update step.
 
 
-\subsubsection{Best Gabor CNN Trained Thoroughly}
+\subsubsection{Best Gabor CNN Trained Thoroughly}%TODO Remove me if not possible
 
 After training conventional \acp{CNN} and Gabor \acp{CNN}, another special kind of network was developed and tested. This network explores the question of how similar the Gabor filters are to such filters, which are trained from scratch by a network with the same structure as a Gabor network but randomly initialized weights also in the first layer. The network is constructed according to the architecture of the best performing Gabor \ac{CNN} with the difference that all 80 first layer filters have to be trained, too. This experiment is thought to reveal whether the good performance of the Gabor \acp{CNN} is achieved by the general structure of the network or by the particular filters, which have been set due to the theoretical considerations discussed above.
 
@@ -566,36 +566,140 @@ After training conventional \acp{CNN} and Gabor \acp{CNN}, another special kind 
 \section{Results}
 \label{sec:results}
 
-\subsection{Conventionally trained CNN}
+Up to now, only the general structure of the examined networks was discussed without giving exact information about the values, which were chosen for the numerous parameters, which have to be set before a network can be trained. This chapter, in contrast, presents all studied networks in detail by describing how their input images were modified and explaining which layers have been chosen in which order with which parameter values. The performance of the networks is appraised by specifying both the training error and the test error as well as their corresponding distances in pixels. Additionally, the training error is plotted for each epoch.\\
+The first part of this chapter is dedicated to the conventionally trained \acp{CNN} introduced in chapter \myref{subsec:conventiallytrainedcnn}, whereas the second part gives insight into the results of the Gabor wavelet based \acp{CNN} discussed in chapter \myref{subsec:gaborcnns}.
 
-\subsubsection{Color vs Gray-Value}
+\subsection{Conventionally trained CNNs}
+
+At least the first \acp{CNN} examined in the scope of thesis are very similar to those in Daniel Nouri's tutorial \cite{nouri-tutorial}. The network introduced there consists of 3 convolutional layers, which alternate with 3 max pooling layers, two following fully connected layers as well as one output layer with 2 neurons per landmark and thus 30 last layer neurons in total. The first convolutional layer produces 32 output maps by filtering the input maps with filters of size $3\times 3$. The second convolutional layer produces twice as many output maps by using $32 \cdot 64 = 2048$ filters, which have a reduced size of $2\times 2$. The third and last convolutional layers uses $64 \cdot 128 = 8192$ filters with a size of $2\times2$, resulting in 128 output maps. All three max pooling layers reduce the dimensionality of their respective input maps by a factor of 2 in both directions. After the third max pooling layer, two fully connected layers follow. While both layers consist of 500 neurons in the network constructed by Daniel Nouri, the layers in this thesis usually have only 300 and 200 neurons in order to save computation time and memory space. More details will be given for every individual network described below.
+
+\subsubsection{Color Images vs. Gray-Value Images and Coarse Learning Rate}
+\label{subsubsec:color_gray_learningrate}
+
+Before addressing the question whether one should use the color information contained in the images or whether it can be omitted, there are some other issues to which one has to give attention to. Since it is not possible to train a network without defining the layers' activation functions, the initialization method of the weights, the resolution of the input images and the learning rate, it is necessary to set all the mentioned parameters to some hopefully reasonable initial values, which were put into question in later considerations. For now all convolutional layers use the \ac{ReLU} as activation function, whereas the fully connected layers insert their output into a sigmoidal activation function. The output layer uses a linear activation function, thus the output of a neuron in this layer is simply the inner product of its weight vector and the activations of the neurons in the penultimate layer. Hence, the output is not limited in an artificial way by applying an activation function with a limited range and thus can be arbitrarily large in theory.\\
+The weights of all layers were randomly initialized by applying the Glorot normal initialization, which was introduced in equation \eqref{eq:glorotinitializationnormal}. The input images were downscaled to a resolution of $96\times128$ in order to reduce the time required for training. Furthermore, they were preprocessed exactly as stated in chapter \myref{subsec:image_preprocessing}. Given the resolution of the input images and the dimensionality of the filters in the network's layers one can calculate the number of free parameters in the whole network, which is 6.444.578 (if color information is used) or 6.444.002 (if gray-value images are used) for the given network. The difference between the numbers in the two set-ups is negligibly small, because the number of weights is different in the first layer only. If color information is used, there are $3\cdot32\cdot3\cdot3 = 864$ weights. If color information is omitted this number subsides to $1\cdot32\cdot3\cdot3 = 288$ weights. Even though the number of weights is approximately equal, the following experiment will show that training a network with color images requires more time due to the increased number of convolutions, which have to be executed.\\
+In order to find out whether the color information is useful or not, two networks have been trained, one with color images as input and one with gray-value images as input. Since one has to choose a learning rate, three different learning rates (0.001, 0.01 and 0.1) have been tested for each of the two network types. The batch size was set to 4, i.e. the weights were updated each time after 4 training images have been presented to the network. Figure \ref{fig:cnn_color_vs_gray} shows the plot of the error on the preprocessed but undistorted training images for 100 training epochs for each of the 6 different networks.
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{results/cnn_color_vs_gray.png}
-	\caption{Color vs Gray-Value}
+	\caption{Training error for color and gray-value inputs and several learning rates}
 	\label{fig:cnn_color_vs_gray}
 \end{figure}
 
-\subsubsection{96$\times$128 vs 120$\times$160}
+Before describing the plot shown in the figure, it shall be substantiated why the error is calculated on the undistorted training images and not on a separate validation set with images showing persons, which are disjoint from those present in the training and test sets. Since the network is never trained on the undistorted training images, also these images can be seen to some extent as kind of validation set even though it contains the same persons, which are presented to the network during the training process. A validation set with images disjoint from the training images and the test images was not used, because it would narrow the number of the latter two kinds of images. Nonetheless calculating the error on the same unseen data every time might give a good estimation of the performance of the network in a more general sense than only for the specific distorted images, which were used in the respective epoch.\\
+As indicated by the plot above, the network, which exploits the color information, always performs better than its corresponding counterpart with the same learning rate, which receives only gray-value images as input. This optical impression is confirmed by the mere numbers given in table \ref{tab:cnn_errors_color_vs_gray}, which shows the training error, the training error in pixels, the test error and the test error in pixels up to the 10th decimal place for each of the 6 tested networks. When speaking about the training error, it is always intended the error on the undistorted training images (although \q{validation set} might be a more appropriate term).
+
+\input{includes/tables/cnn_errors_color_vs_gray}
+Since each color information using network clearly outperforms its corresponding gray-value image using network, all upcoming networks will take 3 input maps, one for each color channel, although training a network with 3 input maps requires more training time than training a network with only 1 input map. Training the color networks took around 45 minutes, whereas the gray-value networks finished the 100th epoch after approximately 30 minutes. The learning rate will be provisionally fixed to 0.1 for the next researched networks, because this learning rate yielded the best results. Before examining the influence of the images' resolution on the networks' performance, table \ref{tab:params_best_color_network} summarizes all parameters of the so far best considered \acp{CNN}.
+
+\input{includes/tables/cnn_params_best_color_network}
+
+Figure \ref{fig:structure_of_the_best_color_network} compactly illustrates the structure of the best performing network.
+
+\input{includes/figures/cnn_structure_of_the_best_color_network}
+
+\subsubsection{Larger Input Image Resolution}
+
+After finding that color information is indeed useful and that the learning rate should be set to a value around $10^{-1}$, it may be a reasonable next step to examine the influence of the images' resolution on the network's performance. Hence, the best performing \ac{CNN} from the previous considerations was compared to an almost identical copy of it. The only difference is that the new network uses larger input images, which now have a resolution of $120\times160$. This means that the total number of free parameters increases from 6.444.578 to 10.322.978. Although the number of parameters for the convolutional layers does not change, there are more connections required to connect the larger output map of the last max pooling layer with all neurons of the first fully connected layer. Figure \ref{fig:cnn_96_vs_120} shows a plot of the training errors for both networks and table \ref{tab:cnn_errors_96_vs_120} lists all error values.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{results/cnn_96vs120.png}
+	\caption{Training error for input images of size $96\times128$ and $120\times160$}
+	\label{fig:cnn_96_vs_120}
+\end{figure}
+
+\input{includes/tables/cnn_errors_96_vs_120}
+
+Both networks were trained for 200 epochs in order to increase the comparability of their long-term behavior. The first 100 epochs of the network with the smaller input maps were adopted from the network presented above. The plot and the error table reveal that the network with input images of size $120\times160$ performs marginally better than the network with input images of size $96\times128$. However, the absolute number of pixels is larger for the network with the larger input images than for the network with the smaller input images, but this is not necessarily a problem, because a deviation of approximately 4.47 pixels in a larger image can be better than a deviation of approximately 3.7 pixels in a smaller image. Even if it is strictly speaking sufficient to look at the normal error values (since both relate to labels in the unit interval), computing the number of pixels, which corresponds to the distance between the true label and the prediction in the original image with a resolution of $480\times640$ pixels, may increase the intuitive understanding and the vividness of the rather abstract error values. As the images with size $96\times128$ are downscaled by a factor of $\frac{1}{5}$ and the images with size $120\times160$ by a factor of $\frac{1}{4}$, the error value belonging to the former images has to be multiplied with 5 and the error value of the latter images with a factor of 4. Table \ref{tab:cnn_errors_400_96_vs_120} shows the resulting values, which again reveal that the \ac{CNN} with the larger input images performs better than the network with the smaller input maps.
+
+\input{includes/tables/cnn_errors_480_96_vs_120}
+
+Because of the better performance of the network with the larger input maps, from now on all networks will use the larger resolution despite the expanded computation time. Even larger input images were not used due to computation time and memory space restrictions. Table \ref{tab:params_120_network} shows the updated parameters for the here considered network with the larger input images. An overview about the network structure like in figure \ref{fig:structure_of_the_best_color_network} is not given, because it looks exactly like the one given in the referenced figure.
+
+\input{includes/tables/cnn_params_120_network}
 
 \subsubsection{Glorot Uniform vs Glorot Normal}
 
-\subsubsection{Learningrates}
+After making the decisions about the color information, the preliminary learning rate and the resolution of the input images the Glorot normal initialization was opposed to the Glorot uniform initialization. Therefore all layers in the \ac{CNN} used the Glorot uniform initialization introduced in equation \eqref{eq:glorotinitialization} instead of the Glorot normal initialization defined in equation \eqref{eq:glorotinitializationnormal}. Figure \ref{fig:cnn_normal_vs_uniform} shows the training error plots for the best network so far and the network with the uniform initialization. Table \ref{tab:cnn_errors_uniform} presents the corresponding error values after the 200th epoch.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{results/cnn_normal_vs_uniform.png}
+	\caption{Glorot uniform initialization vs Glorot normal initialization}
+	\label{fig:cnn_normal_vs_uniform}
+\end{figure}
+
+\input{includes/tables/cnn_errors_uniform}
+
+The values in the table suggest that the network with the Glorot normal initialization performs significantly better than the network with the Glorot uniform distribution. This is not necessarily true, because both shown error curves exhibit strong fluctuations, which render it nearly impossible to claim which one of them is better. However, a decision must be made and since there is no clear winner and since the execution time for both networks is virtually identical (7563s for the Glorot normal initialization and 7573s for the Glorot uniform initialization), it was taken the decision to use the Gabor normal initialization in the further considerations.
+
+\subsubsection{Refinement of the Learning Rate}
+
+There were tested only three learning rates in chapter \ref{subsubsec:color_gray_learningrate} in order to find a passably good one for the first examined networks. This chapter, in contrast, is supposed to refine the choice for the learning rate by testing a few more values. Since 0.1 is the best value so far, the tested learning rates are chosen to be close to this value. The training errors over 200 epochs for 4 networks with the learning rates 0.05, 0.1, 0.15 and 0.2 are depicted in figure \ref{fig:cnn_learningrates}. The corresponding error values for the 200th epoch can be found in table \ref{tab:cnn_errors_learningrates}.\\
+
+\vspace{-0.4cm}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{results/cnn_learningrates.png}
+	\caption{4 different learning rates}
+	\label{fig:cnn_learningrates}
+\end{figure}
+
+\input{includes/tables/cnn_errors_learningrates}
+
+As indicated by the plot and the error values in the table, larger learning rates produce better results. The red curve, which illustrates the training errors for the network with learning rate 0.05, is clearly worse than all three other curves apart from the violet curve during the first 60 epochs. The violet curve depicts the training errors for the network with the highest learning rate, which is prone to larger fluctuations, because it adapts the weights more strongly to the currently considered training images. After the first 60 epochs the violet curve clearly dominates the red curve disregarding very few exceptions. The other 2 curves are located somewhere in between the curve of the smallest and the curve of the largest learning rate. However, the blue line (learning rate 0.15) tends to outstrip the green line (learning rate 0.1) even if the results after exactly 200 epochs are slightly better for learning rate 0.1 (green curve). Since it is hard to tell which learning rate is the best choice the networks with learning rate 0.15 and 0.2 were trained for another 200 epochs in order to find a hopefully clear favorite. The plots for both networks for all 400 epochs are shown in figure \ref{fig:cnn_learningrates_400}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{results/cnn_learningrates_400.png}
+	\caption{learning rates 0.15 and 0.2 for 400 epochs}
+	\label{fig:cnn_learningrates_400}
+\end{figure}
+
+While the violet curve (learning rate 0.2) has rather a large variance during the first 100 epochs, the blue curve (learning rate 0.15) has a larger variance after the first 100 epochs, whereas the violet curve seems to become more and more smooth. 
+\input{includes/tables/cnn_errors_learningrates_more_epochs}
+The error values found in table \ref{tab:cnn_errors_learningrates_more_epochs} show that the network with learning 0.2 is a little bit better than the network with learning rate 0.15. Thus, the learning rate is set to 0.2 for all regarded \acp{CNN} below. Training the network with learning rate 0.2 took 7485s for the first 200 epochs and 7372s for the second 200 epochs and thus 14857s in total.
+
+\subsubsection{Examining Various Activation Functions}
+
+After finding an appropriate learning rate, several different activation function were tried for the two fully connected layers. Next to the sigmoidal activation function, which was used for every network up to now, the tanh activation function and the \ac{ReLU} activation function were tested. Table \ref{tab:cnn_errors_activation_functions} shows the error values after 400 epochs.
+\input{includes/tables/cnn_errors_activation_functions}
+While the results for the sigmoidal activation function are very similar to those of the \ac{ReLU}, the tanh activation function produces much worse results. These finding is clearly confirmed by the plot of the training error depicted in figure \ref{fig:cnn_sigmoid_vs_tanh_vs_relu}. While the curves of the networks with the sigmoidal activation function and the \ac{ReLU} first approach $2\cdot10^{-4}$ and then fall below it, the curve of the tanh network wiggles around at $4\cdot10^{-4}$.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{results/cnn_sigmoid_vs_tanh_vs_relu.png}
+	\caption{Sigmoidal, tanh and \ac{ReLU} activation function}
+	\label{fig:cnn_sigmoid_vs_tanh_vs_relu}
+\end{figure}
+\vspace{-0.2cm}
+The \ac{ReLU} appears to work a bit better than the sigmoidal activation function, thus the \ac{ReLU} actually should be used from now on. As it happens that some mistakes in the code were not spotted before training the Gabor wavelet based networks, whose results will be presented in chapter \ref{subsec:results_gabornetworks} and which always use the sigmoidal function as activation function for the fully connected layers, the sigmoidal activation function was chosen for all the networks following in this subchapter, which had to be retrained after finishing the training phase of the Gabor networks, in order to increase the comparability of both approaches. This should not unduly worsen the performance of the following networks, because the plot shows that the network with the sigmoidal activation function does not perform significantly worse than the \ac{ReLU} network. Thus the network, which forms the basis of the networks examined below, has the parameter configuration shown in table \ref{tab:params_learningrates_network}.
+\vspace{-0.6cm}
+\input{includes/tables/cnn_params_learningrate_0.2}
+%ReLU: 15261\\
+%tanh: 15108\\
+
+
+\subsubsection{Increased Batch Size}
+
+\subsubsection{Omitting Max Pooling Layers}
 
 \subsubsection{Momentum}
 
 \subsubsection{Decay}
 
-\subsubsection{More epochs}
-
 \subsubsection{Larger fully connected layers}
 
 \subsubsection{Larger filters}
 
-Gridsearch, Momentum (bad!?), Decay (bad, too!?), Color vs no color
+\subsubsection{Many epochs for the best network}
+
+%TODO Show images with predictions for the best CNN
 
 \subsection{Gabor Networks}
+\label{subsec:results_gabornetworks}
 
 \subsubsection{Absolute Value and Phase}
 
@@ -646,12 +750,10 @@ Errors after 1000 training epochs.
 	\label{fig:gabor_absatan2_vs_atan2_vs_abs}
 \end{figure}
 
-%TODO Gesamtanzahl der Gewichte bei jedem Netzwerk angeben!
-
 \subsubsection{Absolute Value}
 \subsubsection{Phase}
 
-\newpage
+%\newpage TODO remove comment
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -688,11 +790,11 @@ The \texttt{Dense} layer corresponds to the fully connected layers found in chap
 	
 The functionality of the Gabor layer was explained in chapter \myref{subsubsec:gaborlayer}, the realization of this layer in Keras, however, turns out to be a bit more complicated, because there is no already existing layer, which fulfills the requirements of the Gabor layer.  Fortunately, a layer with the desired behavior can be composed of other Keras layers like the \texttt{Convolution2D}-layer and the \texttt{Merge}-layer. The latter layer is crucial for the realization of the Gabor layer, because it allows to compose complex network architectures by combining several \texttt{Sequential} models into one model.\\
 Firstly, it is necessary to implement the convolution of the input image with the real and the imaginary filters. One problem in doing so is that Keras imposes the constraint that all filters within one \texttt{Convolution2D}-layer must have the same size. This may give rise to some difficulties, because the Gabor filters have 5 different sizes (with $M = 5$). Creating one real \texttt{Convolution2D}-layer and one imaginary \texttt{Convolution2D}-layer for each of the 5 filter sizes and applying the operations described below to each pair of real and imaginary layer dissolves this intricateness. The input image is convolved with the 8 real filters and the 8 imaginary filters of each layer pair, yielding 16 output maps per layer pair and 80 output maps in total, which are subsequently inserted into an activation function. The output maps of each pair of  real and imaginary layer are then merged by an \texttt{ExtendedMerge}-layer with one of the two introduced merging operations, resulting in 8 output maps per layer pair and 40 output maps in total. The \texttt{ExtendedMerge}-layer is a modified \texttt{Merge}-layer, which realizes the absolute value merging operation and the phase merging operation, which are both missing in Keras. The merging operations were implemented by means of the \texttt{sqrt} function and the \texttt{arctan2} function of the Theano backend, respectively. Figure \ref{fig:merge_real_imag_one_size} exemplifies the structure of the first stage of Gabor layer by illustrating how one layer pair is merged. The 4 remaining layer pairs with the other filter sizes are treated analogously.
-\input{includes/merge_real_imag_one_size}
+\input{includes/figures/merge_real_imag_one_size}
 
 Merging each of the 5 real layers with its corresponding imaginary layer yields 40 output maps, that are divided into 5 groups, each of which with a different map size. Since the first classical convolutional layer demands a fixed number of equally sized maps as input, it is necessary to merge the 5 merged layers with different sizes into one single layer with only one map size. Before explaining how this is done, it is important to explain the nomenclature of the following figure \ref{fig:complete_gabor_layer}, which shows how the complete Gabor layer is constructed from its individual components. It uses the term \q{One Size Gabor} for those parts of the Gabor layer, which work on filters of one size only (cf. figure \ref{fig:merge_real_imag_one_size}). The leftmost One Size Gabor layer, which convolves the input image with the largest filters, produces the smallest output maps and the second from the left One Size Gabor layer produces the second smallest output maps and so on. Larger filters produce smaller output maps than smaller filters, because the border of the input image, which can not be taken into consideration, increases proportionally to the size of the filter.\\
 The solution to the problem of the different map sizes is solved by applying zero-padding to all 32 output maps, which are smaller than the 8 largest output maps. In the figure, this is illustrated by the 5 \q{ZeroPadding2D}-layers, which place the small output maps in their center and add as many zeros around them as are required to equate the size of the smaller maps with the size of the largest maps. The output of these 5 layers are 40 output maps of the same size, which have to be merged into one single layer, before they can be passed as input to the subsequent \texttt{Convolution2D}-layer. This is done by a very simple \texttt{Merge}-layer, which does nothing else than combining all its input maps into one single layer without any modification.
-\input{includes/complete_gabor_layer}
+\input{includes/figures/complete_gabor_layer}
 
 In the case that both merging operations shall be used in the same network, there is not only one \texttt{ExtendedMerge}-layer in the One Size Gabor layer but two. Hence, both \texttt{ExtendedMerge}-layers work on the same convolution results but produce twice as many maps in total, because both merging operations are applied to all output maps of the convolution. The output maps of the \texttt{ExtendedMerge}-layers are then merged into one single layer, which becomes the input of the corresponding \texttt{ZeroPadding2D}-layer. Thus, the "$\times 8$" annotations in figure \ref{fig:complete_gabor_layer} have to replaced by "$\times 16$" and the very last \texttt{Merge}-layer of the Gabor layer produces 80 output maps instead of 40.\\
 \end{appendix}
@@ -701,6 +803,11 @@ In the case that both merging operations shall be used in the same network, ther
 
 \addcontentsline{toc}{section}{List of Figures}
 \listoffigures
+
+%\newpage
+
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
 
 \newpage
 

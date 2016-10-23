@@ -1,0 +1,82 @@
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[xscale=0.9,yscale=0.86,every path/.style={>=latex}]
+		% draw input maps		
+		\node (IM1) at (2,11.) [draw,rectangle,minimum width=6cm,minimum height=1.7cm] {Input map 1};
+		\node (IM2) at (12,11.) [draw,rectangle,minimum width=6cm,minimum height=1.7cm] {Input map 2};
+		
+		% draw filters
+		\node (F11) at (0,7.5) [draw,rectangle,minimum size=1cm] {$F_{11}$};
+		\node (F12) at (2,7.5) [draw,rectangle,minimum size=1cm] {$F_{12}$};
+		
+		\node (F21) at (6,7.5) [draw,rectangle,minimum size=1cm] {$F_{21}$};
+		\node (F22) at (8,7.5) [draw,rectangle,minimum size=1cm] {$F_{22}$};
+
+		\node (F31) at (12,7.5) [draw,rectangle,minimum size=1cm] {$F_{31}$};
+		\node (F32) at (14,7.5) [draw,rectangle,minimum size=1cm] {$F_{32}$};
+		
+		% draw lines from input maps to filters
+		\draw[->] (IM1.south) to (F11.north);
+		\draw[->] (IM2.south) to (F12.north);
+		\draw[->] (IM1.south) to (F21.north);
+		\draw[->] (IM2.south) to (F22.north);
+		\draw[->] (IM1.south) to (F31.north);
+		\draw[->] (IM2.south) to (F32.north);
+		
+		% draw convolution symbols on the filters
+		\node[draw,rectangle,fill=white,above right=-0.4cm of F11] {$*$};
+		\node[draw,rectangle,fill=white,above left=-0.4cm of F12] {$*$};
+		\node[draw,rectangle,fill=white,above right=-0.4cm of F21] {$*$};
+		\node[draw,rectangle,fill=white,above left=-0.4cm of F22] {$*$};
+		\node[draw,rectangle,fill=white,above right=-0.4cm of F31] {$*$};
+		\node[draw,rectangle,fill=white,above left=-0.4cm of F32] {$*$};
+		
+		% draw output maps
+		\node (OM1) at (1,2.5) [draw,rectangle,minimum width=4cm,minimum height=1.5cm] {Output map 1};
+		\node (OM2) at (7,2.5) [draw,rectangle,minimum width=4cm,minimum height=1.5cm] {Output map 2};
+		\node (OM3) at (13,2.5) [draw,rectangle,minimum width=4cm,minimum height=1.5cm] {Output map 3};
+		
+		% draw + signs
+		\node (P1) at (1,5.6) [draw,rectangle,minimum size=0.5cm] {+};
+		\node (P2) at (7,5.6) [draw,rectangle,minimum size=0.5cm] {+};
+		\node (P3) at (13,5.6) [draw,rectangle,minimum size=0.5cm] {+};
+		
+		% draw lines from filters to + signs
+		\draw[->] (F11.south) to (P1.north);
+		\draw[->] (F12.south) to (P1.north);
+		\draw[->] (F21.south) to (P2.north);
+		\draw[->] (F22.south) to (P2.north);
+		\draw[->] (F31.south) to (P3.north);
+		\draw[->] (F32.south) to (P3.north);
+
+		% draw biases
+		\node[draw,rectangle,left=of P1] (b1) {$b_1$};
+		\node[draw,rectangle,left=of P2] (b2) {$b_2$};
+		\node[draw,rectangle,left=of P3] (b3) {$b_3$};
+
+		% draw lines from biases to + signs
+		\draw[->] (b1) to (P1);
+		\draw[->] (b2) to (P2);
+		\draw[->] (b3) to (P3);
+
+		% draw activation functions
+		\node (A1) at (1,4.4) [draw,rectangle,minimum size=0.5cm] {};
+     	\draw[-] (0.82,4.3) to (1.02,4.3) to (1.17,4.5);
+		\node (A2) at (7,4.4) [draw,rectangle,minimum size=0.5cm] {};
+     	\draw[-] (6.82,4.3) to (7.02,4.3) to (7.17,4.5);
+		\node (A3) at (13,4.4) [draw,rectangle,minimum size=0.5cm] {};
+     	\draw[-] (12.82,4.3) to (13.02,4.3) to (13.17,4.5);
+		
+		% draw lines from + signs to activation functions
+		\draw[->] (P1) to (A1);
+		\draw[->] (P2) to (A2);
+		\draw[->] (P3) to (A3);
+
+		% draw lines from activation functions to output maps
+		\draw[->] (A1) to (OM1);
+		\draw[->] (A2) to (OM2);
+		\draw[->] (A3) to (OM3);
+	\end{tikzpicture}
+	\caption{How maps are organized in a convolutional layer}
+	\label{fig:cnn_maps}
+\end{figure}

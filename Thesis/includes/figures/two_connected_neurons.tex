@@ -1,0 +1,17 @@
+\begin{figure}[htbp]
+\centering
+	\begin{tikzpicture}[xscale=1.2, every path/.style={>=latex}]
+	\node (N1) at (0,0) [circle,draw,minimum size=1cm] {N1};
+	\node [below=0.05cm of N1]{Soma};
+	\node (Synapse) at (2,0) [rectangle,draw] {\hspace{0.2cm}};
+	\node [below=0.1cm of Synapse]{Synapse};
+	\node (N2) at (4,0) [circle,draw,minimum size=1cm] {N2};
+	\node [below=0.05cm of N2]{Soma};
+	\draw[->] (N1) to node[above]{Axon} (Synapse);
+	\draw[->] (N2) to node[above]{Axon} (5.9,0);
+	\draw[->] (-2,0.) to node[above]{Dendrite} (N1);
+	\draw[->] (Synapse) to node[above]{Dendrite} (N2);
+	\end{tikzpicture}
+\caption{Two connected neurons N1 and N2}
+\label{fig:two_connected_neurons}
+\end{figure}

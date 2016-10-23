@@ -1,0 +1,19 @@
+\begin{table}[h!]
+	\footnotesize
+	\centering
+	\begin{tabular}{ll}
+	\hline
+		\textbf{Parameter} & \textbf{Value}\\
+	\hline
+		\textbf{Resolution} & $120\times160$\\
+		\textbf{Learning rate} & 0.1\\
+		\textbf{Batch size} & 4\\
+		\textbf{Color} & Yes\\
+		\textbf{Epochs} & 200\\
+		\textbf{Trainable parameters} & 10.322.978\\
+		\textbf{Execution time} & 7563s\\
+	\hline
+	\end{tabular}
+	\caption{Parameters for the network with larger input images ($120\times160$)}
+	\label{tab:params_120_network}
+\end{table}

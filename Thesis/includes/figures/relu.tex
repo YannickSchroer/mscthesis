@@ -1,0 +1,19 @@
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.85]
+		\draw[->] (-4 - 0.3,0) -- (4 + 0.3,0) node[right] {$a$};
+		\draw[->] (0,-0.3) --(0,4.3) node[above] {$\operatorname{ReLU}(a)$};
+		\draw[domain=0:4,samples=30,variable=\x,blue] plot ({\x},{\x});
+		\draw[domain=-4:0,samples=2,variable=\x,blue] plot ({\x},{0});
+		\foreach \tic in {0,...,4}
+     	{
+     		\draw[shift={(0,\tic)},color=black] (3pt,0pt) -- (-3pt,0pt) node[left] {$\tic$};
+     	}
+     	\foreach \tic in {-4,...,4}
+     	{
+     		\draw[shift={(\tic,0)},color=black] (0pt,3pt) -- (0pt,-3pt) node[below] {$\tic$};
+     	}
+	\end{tikzpicture}
+	\caption{Rectified Linear Unit (ReLU)}
+	\label{fig:relu}
+\end{figure}

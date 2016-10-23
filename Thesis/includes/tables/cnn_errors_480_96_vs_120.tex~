@@ -1,0 +1,20 @@
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|}
+	\hline
+		\textbf{Setup} & \textbf{Upscaled Training Error} \textbf{Upscaled Test Error}\\
+	\hline
+		$96\times128$	& 12.11753026
+						& 18.44213778
+						\\
+	\hline
+		$120\times160$ 	& 11.03531939
+						& 17.85571974
+						\\
+	\hline
+	\end{tabular}
+	\normalsize
+	\caption{Upscaled errors for input images of size $96\times128$ and $120\times160$}
+	\label{tab:cnn_errors_400_96_vs_120}
+\end{table}

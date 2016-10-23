@@ -1,0 +1,24 @@
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|l|}
+	\hline
+		\textbf{Setup} & \textbf{Training error} & \textbf{Training error (pixels)} & \textbf{Test error} & \textbf{Test error (pixels)}\\
+	\hline
+		96 	& 0.0003584827%6249689909
+			& 2.4235060513%12683
+			& 0.0008303526%5135673149
+			& 3.6884275565%37974
+			\\
+	\hline
+		120 & 0.0002973102%3911780993
+			& 2.7588298464%051633
+			& 0.0007783855%6463537387
+			& 4.4639299338%88476
+		\\
+	\hline
+	\end{tabular}
+	\normalsize
+	\caption{Errors for input images of size $96\times128$ and $120\times160$}
+	\label{tab:cnn_errors_96_vs_120}
+\end{table}

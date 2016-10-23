@@ -1,0 +1,48 @@
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabularx}{|X|l|l|l|l|}
+	\hline
+		\textbf{Setup} & \textbf{Training error} & \textbf{Training error (pixels)} & \textbf{Test error} & \textbf{Test error (pixels)}\\
+	\hline
+		color lr0.1		& 0.0005185750%4570566914
+						& 2.9148470884%15048
+						& 0.0009183273%8801671525
+						& 3.8789013812%245683
+						\\
+	\hline
+		color lr0.01 	& 0.0008885668%6493293487
+						& 3.8155313542%23315
+						& 0.0010579627%578808069
+						& 4.1633714493%327565
+						\\
+	\hline
+		color lr0.001 	& 0.0025131641%142505522
+						& 6.4168279428%29778
+						& 0.0023130839%1477012
+						& 6.1560999715%39907
+						\\
+	\hline
+		gray lr0.1 		& 0.0008617480%339873435
+						& 3.7575097855%95859
+						& 0.0012009542%901969344
+						& 4.4358127880%4534
+						\\
+	\hline
+		gray lr0.01 	& 0.0014563405%874423343
+						& 4.8847399300%94048
+						& 0.0015545599%945216019
+						& 5.0467723299%393965
+						\\
+	\hline
+		gray lr0.001 	& 0.0032208980%49184056
+						& 7.2643784068%44702
+						& 0.0029630543%498798487
+						& 6.9675449383%862205
+						\\
+	\hline
+	\end{tabularx}
+	\normalsize
+	\caption{Errors for color and gray-value input and several learning rates.}
+	\label{tab:cnn_errors_color_vs_gray}
+\end{table}
