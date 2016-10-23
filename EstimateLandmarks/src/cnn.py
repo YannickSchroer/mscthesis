@@ -17,7 +17,7 @@ for learningrate in [0.2]:
 	momentum = 0
 
 	data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-	folder_name = "cnn/cnn_2maxpooling_" + str(learningrate)
+	folder_name = "cnn/cnn_2maxpooling_lr" + str(learningrate)
 	epochs = 400
 	load_epoch = 0
 	save_epoch = load_epoch + epochs
@@ -90,7 +90,7 @@ for learningrate in [0.2]:
 	result_string += "initialization: " + initialization + "\n"
 	result_string += "activation function: " + activation_function + "\n"
 	result_string += "batch size: " + str(batchsize) + "\n"
-	result_string += "max pooling: " + str(max_pooling) + "\n"
+	result_string += "max pooling: " + str(nb_max_pooling) + "\n"
 	result_string += "learningrate: " + str(learningrate) + "\n"
 	result_string += "decay: " + str(decay) + "\n"
 	result_string += "resolution: " + str(resolution[0]) + "x" + str(resolution[1])
