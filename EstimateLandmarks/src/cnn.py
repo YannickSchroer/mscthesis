@@ -39,9 +39,6 @@ for learningrate in [0.2]:
 	# build model
 	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, momentum=momentum, decay = decay, initialization=initialization, activation_function=activation_function, nb_max_pooling=nb_max_pooling)
 
-	print(model.summary())
-	exit()
-
 	# Load status
 	if load_epoch > 0:
 		dataset_io.load_status(model, optimizer, weight_store_path + "/" + str(load_epoch)) # LOAD =========================================================================
