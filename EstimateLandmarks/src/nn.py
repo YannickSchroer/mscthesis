@@ -78,13 +78,13 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	cnn_model = models.Sequential()
 	
 	# add convolution2D and maxpooling2D layers
-	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=3, nb_row=3))
+	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=13, nb_row=13))
 	if nb_max_pooling > 0:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
-	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=2, nb_row=2))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=9, nb_row=9))
 	if nb_max_pooling > 1:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
-	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=2, nb_row=2))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=3, nb_row=3))
 	if nb_max_pooling > 2:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 
@@ -92,8 +92,8 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	cnn_model.add(core_layers.Flatten())
 	
 	# add fully connected layers
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=500))
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=400))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=300))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=200))
 
 	# add output layer
 	cnn_model.add(core_layers.Dense(activation="linear", init=initialization, output_dim=30))
