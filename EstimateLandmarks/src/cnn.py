@@ -13,9 +13,9 @@ for learningrate in [0.2]:
 
 	# define variables
 	data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-	folder_name = "cnn/cnn_largerfilters_lr" + str(learningrate)
-	epochs = 600
-	load_epoch = 400
+	folder_name = "cnn/cnn_largenet_lr" + str(learningrate)
+	epochs = 1000
+	load_epoch = 0
 	save_epoch = load_epoch + epochs
 	weight_store_path = "weights/" + folder_name
 	result_store_path = "results/" + folder_name
@@ -38,6 +38,9 @@ for learningrate in [0.2]:
 
 	# build model
 	model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, momentum=momentum, decay = decay, initialization=initialization, activation_function=activation_function, nb_max_pooling=nb_max_pooling)
+
+	print(model.summary())
+	exit()
 
 	# Load status
 	if load_epoch > 0:

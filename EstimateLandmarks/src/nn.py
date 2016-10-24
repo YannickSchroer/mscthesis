@@ -92,8 +92,8 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	cnn_model.add(core_layers.Flatten())
 	
 	# add fully connected layers
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=300))
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=200))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=500))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=400))
 
 	# add output layer
 	cnn_model.add(core_layers.Dense(activation="linear", init=initialization, output_dim=30))
