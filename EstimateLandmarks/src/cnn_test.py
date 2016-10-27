@@ -9,13 +9,13 @@ import visualize
 import dataset_io
 import custom_callbacks
 
-training = False
+training = True
 draw_pred = False
 
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv" if training else "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
-folder_name = "cnn/cnn_nomaxpooling_lr0.2"
+folder_name = "cnn/cnn_batchsize1_lr0.2"
 weight_load_path = "weights/" + folder_name
-load_epoch = 200
+load_epoch = 400
 learningrate = 0
 decay = 0
 batchsize = 4
@@ -25,10 +25,11 @@ normalize_output = True
 resolution = (120,160)
 grayscale = False
 initialization = "glorot_normal"
-activation_function = "tanh"
+activation_function = "sigmoid"
+nb_max_pooling = 3
 
 # build model
-model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, initialization=initialization, activation_function=activation_function)
+model, optimizer = nn.build_cnn_model(input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, initialization=initialization, activation_function=activation_function, nb_max_pooling=nb_max_pooling)
 
 # Load status
 dataset_io.load_status(model, optimizer, weight_load_path + "/" + str(load_epoch))
