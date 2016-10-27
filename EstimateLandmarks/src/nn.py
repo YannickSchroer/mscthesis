@@ -143,13 +143,13 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 
 		if mode == "abs":
 			# merge real and imaginary models, sum up their outputs and compute squareroot
-			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
-			#gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
+			#gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
+			gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
 
 		elif mode == "atan2":
 			# merge real and imaginary models by taking their atan2
-			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
-			#gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
+			#gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+			gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
 
 		elif mode == "abs_atan2":
 			# create merged models
@@ -157,10 +157,10 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 			atan2_merge_real_imag_model = models.Sequential()
 
 			# merge real and imaginary models, sum up their outputs and compute squareroot
-			abs_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
-			atan2_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
-			#abs_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
-			#atan2_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
+			#abs_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
+			#atan2_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+			abs_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
+			atan2_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
 
 			# merge 'abs' and 'atan2' model
 			gabor_merged_model.add(core_layers.Merge([abs_merge_real_imag_model, atan2_merge_real_imag_model], concat_axis=1, mode='concat'))
