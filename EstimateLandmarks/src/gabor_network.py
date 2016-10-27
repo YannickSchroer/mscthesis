@@ -45,7 +45,7 @@ except IOError:
 model, optimizer = nn.build_gabor_model(gabor_filters, input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
 #old_weights = np.copy(real_models[0].get_weights()[0][0])
-#old_weights2 = np.copy(model.get_weights()[0][0])
+old_weights2 = np.copy(model.get_weights()[0][0])
 
 # Load status
 if load_epoch > 0:
@@ -88,8 +88,8 @@ model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch
 
 #new_weights = real_models[0].get_weights()[0][0]
 #print(old_weights - new_weights)
-#new_weights2 = np.copy(model.get_weights()[0][0])
-#print(old_weights2 - new_weights2)
+new_weights2 = np.copy(model.get_weights()[0][0])
+print(old_weights2 - new_weights2)
 #exit()
 
 # save weights
