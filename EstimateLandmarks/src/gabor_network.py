@@ -9,20 +9,30 @@ import custom_callbacks
 
 result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 
-data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-folder_name = "gabor_lr0.1_atan2_hd_gray_2cl_complete_cuda01"
-weight_store_path = "weights/" + folder_name
 gabor_file = "data/gabor/gabor_filters.dat"
+data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
+folder_name = "gabor_complete_lambda"
+weight_store_path = "weights/" + folder_name
+result_store_path = "results/" + folder_name
 learningrate = 0.1
 decay = 0.
 batchsize = 4
-epochs = 500
+epochs = 1
+load_epoch = 0
+save_epoch = load_epoch + epochs
 normalize = 2
 normalize_output = True
 resolution = (120,160)
 grayscale = True
+initialization = "glorot_normal"
 mode = "atan2"
 add_conv2 = False
+
+# create folders for weights and results if they do not exist
+if not os.path.isdir(weight_store_path):
+	os.makedirs(weight_store_path)
+if not os.path.isdir(result_store_path):
+	os.makedirs(result_store_path)
 
 # load gabor filters
 try:
@@ -34,8 +44,12 @@ except IOError:
 # build model
 model, optimizer = nn.build_gabor_model(gabor_filters, input_shape=(1 if grayscale else 3, resolution[0], resolution[1]), learningrate = learningrate, decay = decay, mode=mode, add_conv2 = add_conv2)
 
+#old_weights = np.copy(real_models[0].get_weights()[0][0])
+#old_weights2 = np.copy(model.get_weights()[0][0])
+
 # Load status
-dataset_io.load_status(model, optimizer, weight_store_path + "/2000") # LOAD =========================================================================
+if load_epoch > 0:
+	dataset_io.load_status(model, optimizer, weight_store_path + "/" + str(load_epoch)) # LOAD =========================================================================
 
 #dataset_io.load_status(model, optimizer, "weights/gabor_lr0.1_atan2_hd_gray_2cl/1000") # LOAD BEST GABOR NETWORK
 
@@ -72,24 +86,33 @@ callbacks.append(loss_callback)
 # fit model
 model.fit(expanded_x_train, y_train, callbacks=callbacks, nb_epoch=epochs, batch_size=batchsize, shuffle=True, verbose=True)
 
-# save weights
-dataset_io.store_status(model, optimizer, weight_store_path + "/2500")
+#new_weights = real_models[0].get_weights()[0][0]
+#print(old_weights - new_weights)
+#new_weights2 = np.copy(model.get_weights()[0][0])
+#print(old_weights2 - new_weights2)
+#exit()
 
+# save weights
+#dataset_io.store_status(model, optimizer, weight_store_path + "/" + str(save_epoch))
+
+# construct result string
 result_string += "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H:%M:%S") + "\n"
 result_string += "epochs: " + str(epochs) + "\n"
 result_string += "grayscale: " + str(grayscale) + "\n"
-result_string += "weightscales: "
-result_string += "glorot_normal\n"
+result_string += "initialization: " + initialization + "\n"
+result_string += "batch size: " + str(batchsize) + "\n"
 result_string += "learningrate: " + str(learningrate) + "\n"
-result_string += "decay: " + str(decay)
-
-result_string += "\n\n"
+result_string += "decay: " + str(decay) + "\n"
+result_string += "resolution: " + str(resolution[0]) + "x" + str(resolution[1])
 
 # save loss history from callbacks
-result_string += "Loss histories:\n"
+loss_string = ""
 for l in loss_callback.loss_history:
-	result_string += str(l) + ","
-result_string = result_string[:-1] + "\n"
+	loss_string += str(l) + "\n"
+loss_string = loss_string[:-1]
 
-with open("results/" + folder_name + "/results_2500.dat", "w") as loss_file:
-		loss_file.write(result_string)
+# save results data file and results csv file
+with open(result_store_path + "/results_" + str(save_epoch) + ".dat", "w") as result_file:
+	result_file.write(result_string)
+with open(result_store_path + "/results_" + str(save_epoch) + ".csv", "w") as loss_file:
+	loss_file.write(loss_string)
