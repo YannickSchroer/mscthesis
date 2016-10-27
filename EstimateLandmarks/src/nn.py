@@ -14,8 +14,6 @@ import keras.optimizers as optimizers
 import keras.backend as K
 import theano as T
 
-from scaled_tanh import scaled_tanh
-
 def load_layout(path):
 	'''This method loads a layout in JSON format'''
 	with open(path) as in_file:
@@ -78,13 +76,13 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	cnn_model = models.Sequential()
 	
 	# add convolution2D and maxpooling2D layers
-	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=13, nb_row=13))
+	cnn_model.add(conv_layers.Convolution2D(input_shape = input_shape, activation="relu", init=initialization, nb_filter=32, nb_col=3, nb_row=3))
 	if nb_max_pooling > 0:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
-	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=9, nb_row=9))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=64, nb_col=2, nb_row=2))
 	if nb_max_pooling > 1:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
-	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=3, nb_row=3))
+	cnn_model.add(conv_layers.Convolution2D(activation="relu", init=initialization, nb_filter=128, nb_col=2, nb_row=2))
 	if nb_max_pooling > 2:
 		cnn_model.add(conv_layers.MaxPooling2D(pool_size=(2, 2)))
 
@@ -92,8 +90,8 @@ def build_cnn_model(input_shape=(3,96,128), learningrate = 0.1, momentum=0., dec
 	cnn_model.add(core_layers.Flatten())
 	
 	# add fully connected layers
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=500))
-	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=400))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=300))
+	cnn_model.add(core_layers.Dense(activation=activation_function, init=initialization, output_dim=200))
 
 	# add output layer
 	cnn_model.add(core_layers.Dense(activation="linear", init=initialization, output_dim=30))
@@ -146,10 +144,12 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 		if mode == "abs":
 			# merge real and imaginary models, sum up their outputs and compute squareroot
 			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
+			#gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
 
 		elif mode == "atan2":
 			# merge real and imaginary models by taking their atan2
 			gabor_merged_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+			#gabor_merged_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
 
 		elif mode == "abs_atan2":
 			# create merged models
@@ -159,6 +159,8 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 			# merge real and imaginary models, sum up their outputs and compute squareroot
 			abs_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='abs'))
 			atan2_merge_real_imag_model.add(custom_layers.ExtendedMerge([real_model,imag_model], concat_axis=1, mode='atan2'))
+			#abs_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x: K.sqrt(x[0]**2 + x[1]**2)))
+			#atan2_merge_real_imag_model.add(core_layers.Merge([real_model,imag_model], concat_axis=1, output_shape=real_model.output_shape, mode=lambda x:T.tensor.arctan2(x[1],x[0])))
 
 			# merge 'abs' and 'atan2' model
 			gabor_merged_model.add(core_layers.Merge([abs_merge_real_imag_model, atan2_merge_real_imag_model], concat_axis=1, mode='concat'))
@@ -212,7 +214,7 @@ def build_gabor_model(gabor_filters, input_shape=(3,96,128), learningrate = 0.01
 
 	# add output layer
 	merged_model.add(core_layers.Dense(activation="linear", init="glorot_normal", output_dim=30))
-
+	
 	optimizer = optimizers.SGD(lr=learningrate, momentum=momentum, decay=decay, nesterov=True)
 	merged_model.compile(loss='mse', optimizer=optimizer)
 

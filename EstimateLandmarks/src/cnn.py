@@ -13,7 +13,7 @@ result_string = "time: " + time.strftime("%d/%m/%Y") + " - " + time.strftime("%H
 # define variables
 learningrate = 0.2
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv"
-folder_name = "cnn/cnn_largenet_gray_lr" + str(learningrate)
+folder_name = "cnn/cnn_batchsize1_lr" + str(learningrate)
 epochs = 1000
 load_epoch = 0
 save_epoch = load_epoch + epochs
@@ -28,7 +28,7 @@ resolution = (120,160)
 grayscale = True
 initialization = "glorot_normal"
 activation_function = "sigmoid"
-nb_max_pooling = 2
+nb_max_pooling = 3
 
 # create folders for weights and results if they do not exist
 if not os.path.isdir(weight_store_path):
