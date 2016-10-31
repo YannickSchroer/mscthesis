@@ -1,31 +1,93 @@
-@article{ebgm,
-    author 	= {Wiskott, L.  and Würtz, R. P. and Westphal, G. },
-    title   = {{E}lastic {B}unch {G}raph {M}atching},
-    year	= 2014,
-    journal	= Scholarpedia,
-    volume  = 9,
-    number  = 3,
-    pages   = 10587,
-    note    = "\url{http://www.scholarpedia.org/w/index.php?title=Elastic_Bunch_Graph_Matching&action=cite&rev=143316}"
+@article{dropout,
+ author          = {Srivastava, Nitish and Hinton, Geoffrey and Krizhevsky, Alex and Sutskever, Ilya and Salakhutdinov, Ruslan},
+ title           = {Dropout: A Simple Way to Prevent Neural Networks from Overfitting},
+ journal         = {J. Mach. Learn. Res.},
+ issue_date      = {January 2014},
+ volume          = {15},
+ number          = {1},
+ month           = jan,
+ year            = {2014},
+ issn            = {1532-4435},
+ pages           = {1929--1958},
+ numpages        = {30},
+ url             = {http://dl.acm.org/citation.cfm?id=2627435.2670313},
+ acmid           = {2670313},
+ publisher       = {JMLR.org},
+ keywords        = {deep learning, model combination, neural networks, regularization},
+ note            = {\url{http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf}}
 }
 
-@INPROCEEDINGS{theano,
-    author    = {Bergstra, James and Breuleux, Olivier and Bastien, Fr{\'{e}}d{\'{e}}ric and Lamblin, Pascal and Pascanu, Razvan and Desjardins, Guillaume and Turian, Joseph and Warde-Farley, David and Bengio, Yoshua},
-    month     = jun,
-    title     = {Theano: a {CPU} and {GPU} Math Expression Compiler},
-    booktitle = {Proceedings of the Python for Scientific Computing Conference ({SciPy})},
-    year      = {2010},
-    location  = {Austin, TX},
-    note      = {Oral Presentation},
-    abstract  = {Theano is a compiler for mathematical expressions in Python that combines the convenience of NumPy’s syntax with the speed of optimized native machine language. The user composes mathematical expressions in a high-level description that mimics NumPy’s syntax and semantics, while being statically typed and functional (as opposed to imperative). These expressions allow Theano to provide symbolic differentiation. Before performing computation, Theano optimizes the choice of expressions, translates them into C++ (or CUDA for GPU), compiles them into dynamically loaded Python modules, all automatically. Common machine learning algorithms implemented with Theano are from 1.6× to 7.5× faster than competitive alternatives (including those implemented with C/C++, NumPy/SciPy and MATLAB) when compiled for the CPU and between 6.5× and 44× faster when compiled for the GPU. This paper illustrates how to use Theano, outlines the scope of the compiler, provides benchmarks on both CPU and GPU processors, and explains its overall design.}
+@inproceedings{dsrnn,
+    publisher 	 = {Journal of Machine Learning Research - Workshop and Conference Proceedings},
+    title        = {{Deep Sparse Rectifier Neural Networks}},
+    note         = {\url{http://www.jmlr.org/proceedings/papers/v15/glorot11a/glorot11a.pdf}},
+    booktitle    = {Proceedings of the Fourteenth International Conference on Artificial Intelligence and Statistics (AISTATS-11)},
+    author       = {Xavier Glorot and Antoine Bordes and Yoshua Bengio},
+    volume       = {15},
+    editor       = {Geoffrey J. Gordon and David B. Dunson},
+    year         = {2011},
+    pages        = {315-323}
+}
+
+@article{ebgm,
+    author 	    = {Wiskott, L.  and Würtz, R. P. and Westphal, G. },
+    title       = {{E}lastic {B}unch {G}raph {M}atching},
+    year	    = 2014,
+    journal    	= Scholarpedia,
+    volume      = 9,
+    number      = 3,
+    pages       = 10587,
+    note        = "\url{http://www.scholarpedia.org/w/index.php?title=Elastic_Bunch_Graph_Matching&action=cite&rev=143316}"
+}
+
+@inproceedings{glorotinitialization,
+    author       = {Xavier Glorot and Yoshua Bengio},
+    title        = {Understanding the difficulty of training deep feedforward neural networks},
+    booktitle    = {Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS’10). Society for Artificial Intelligence and Statistics},
+    year         = {2010},
+	pages        = {249-256},
+	note         = {\url{http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf}},
+	journal      = {Journal of Machine Learning Research - Workshop and Conference Proceedings},
+	volume       = {9},
+	editor       = {Yee W. Teh and D. M. Titterington}
+}
+
+@article{gtsrb,
+	author       = {Cireşan, Dan and Meier, Ueli and Masci, Jonathan and Schmidhuber, Jürgen},
+	title        = {{Multi-column deep neural network for traffic sign classification}},
+	journal      = {Neural Networks},
+	year         = {2012},
+	pages        = {333-338}
+}
+
+@misc{hdf5,
+    author       = {{The HDF Group}},
+    title        = "{Hierarchical Data Format, version 5}",
+    year         = {1997-2016},
+    note         = {\url{https://support.hdfgroup.org/HDF5/}}
+}
+
+@misc{kaggle,
+    author       = {Kaggle},
+    title        = {Facial Keypoints Detection},
+    howpublished = {\url{https://www.kaggle.com/c/facial-keypoints-detection}},
+    year         = {2013-2016}
+}
+
+@misc{keras,
+  title          = {Keras},
+  author         = {Chollet, Fran\c{c}ois},
+  year           = {2016},
+  publisher      = {GitHub},
+  howpublished   = {\url{https://github.com/fchollet/keras}}
 }
 
 @article{muct,
-    author  = {S. Milborrow and J. Morkel and F. Nicolls},
-    title   = {{The MUCT Landmarked Face Database}},
-    journal = {Pattern Recognition Association of South Africa},
-    year    = 2010,
-    note    = {\url{http://www.milbo.org/muct}}
+    author       = {S. Milborrow and J. Morkel and F. Nicolls},
+    title        = {{The MUCT Landmarked Face Database}},
+    journal      = {Pattern Recognition Association of South Africa},
+    year         = 2010,
+    note         = {\url{http://www.milbo.org/muct}}
 }
 
 @misc{nouri-tutorial,
@@ -37,9 +99,24 @@
     note         = {Accessed: 2016-09-01}
 }
 
-@misc{kaggle,
-    author       = {Kaggle},
-    title        = {Facial Keypoints Detection},
-    howpublished = {\url{https://www.kaggle.com/c/facial-keypoints-detection}},
-    year         = {2013-2016}
+@inproceedings{theano,
+    author      = {Bergstra, James and Breuleux, Olivier and Bastien, Fr{\'{e}}d{\'{e}}ric and Lamblin, Pascal and Pascanu, Razvan and Desjardins, Guillaume and Turian, Joseph and Warde-Farley, David and Bengio, Yoshua},
+    month       = jun,
+    title       = {Theano: a {CPU} and {GPU} Math Expression Compiler},
+    booktitle   = {Proceedings of the Python for Scientific Computing Conference ({SciPy})},
+    year        = {2010},
+    location    = {Austin, TX},
+    note        = {Oral Presentation},
+    abstract    = {Theano is a compiler for mathematical expressions in Python that combines the convenience of NumPy’s syntax with the speed of optimized native machine language. The user composes mathematical expressions in a high-level description that mimics NumPy’s syntax and semantics, while being statically typed and functional (as opposed to imperative). These expressions allow Theano to provide symbolic differentiation. Before performing computation, Theano optimizes the choice of expressions, translates them into C++ (or CUDA for GPU), compiles them into dynamically loaded Python modules, all automatically. Common machine learning algorithms implemented with Theano are from 1.6× to 7.5× faster than competitive alternatives (including those implemented with C/C++, NumPy/SciPy and MATLAB) when compiled for the CPU and between 6.5× and 44× faster when compiled for the GPU. This paper illustrates how to use Theano, outlines the scope of the compiler, provides benchmarks on both CPU and GPU processors, and explains its overall design.}
+}
+
+@article{uat,
+	author       = {Hornik, K. and Stinchcombe, M. and White, H.},
+	title        = {{Multilayer Feedforward Networks Are Universal Approximators}},
+	journal      = {Neural Networks},
+	volume       = {2},
+	pages        = {359-366},
+	month        = jul,
+	year         = {1989},
+	note         = {\url{http://deeplearning.cs.cmu.edu/pdfs/Kornick_et_al.pdf}, Accessed: 2016-09-05}
 }
