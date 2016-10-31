@@ -1,0 +1,30 @@
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|l|}
+	\hline
+		\textbf{Setup} & \textbf{Training error} & \textbf{Training error (pixels)} & \textbf{Test error} & \textbf{Test error (pixels)}\\
+	\hline
+		no dropout		& 0.0001501458%6131201213
+						& 1.9605443248%209184
+						& 0.0005448454%9607827022
+						& 3.7347081143%783805
+						\\
+	\hline
+		0.3 dropout 	& 0.0001987915%9818321658
+						& 2.2558955901%127926
+						& 0.0005090703%4532421695
+						& 3.6100139667%73529
+						\\
+	\hline
+		0.5 dropout 	& 0.0004244664%2619407908
+						& 3.2964132796%978634
+						& 0.0006743826%1828578971
+						& 4,155020461 %
+						\\
+	\hline
+	\end{tabular}
+	\normalsize
+	\caption{Errors with and without dropout}
+	\label{tab:gabor_errors_dropout}
+\end{table}

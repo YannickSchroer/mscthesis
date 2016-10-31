@@ -1,0 +1,33 @@
+\begin{figure}[h!]
+	\scriptsize
+	\centering
+	\begin{tabular}{|c|}
+	\hline
+		\textbf{Convolutional Layer}\\
+		3 input maps, 32 output maps, filter size $13\times13$, Glorot normal initialization, \ac{ReLU}\\
+	\hline
+		\textbf{Max Pooling Layer}\\
+		pooling size $2\times2$\\
+	\hline
+		\textbf{Convolutional Layer}\\
+		64 output maps, filter size $9\times9$, Glorot normal initialization, \ac{ReLU}\\
+	\hline
+		\textbf{Max Pooling Layer}\\
+		pooling size $2\times2$\\
+	\hline
+		\textbf{Convolutional Layer}\\
+		128 output maps, filter size $3\times3$, Glorot normal initialization, \ac{ReLU}\\
+	\hline
+		\textbf{Fully Connected Layer}\\
+		300 neurons, Glorot normal initialization, sigmoid\\
+	\hline
+		\textbf{Fully Connected Layer}\\
+		200 neurons, Glorot normal initialization, sigmoid\\
+	\hline
+		\textbf{Output Layer}\\
+		30 neurons, Glorot normal initialization\\
+	\hline
+	\end{tabular}
+	\caption{Structure of the  network with larger filters}
+	\label{fig:structure_of_the_largerfilters_network}
+\end{figure}

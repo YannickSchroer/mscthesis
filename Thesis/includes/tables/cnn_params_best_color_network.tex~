@@ -1,20 +1,18 @@
 \begin{table}[h!]
 	\footnotesize
 	\centering
-	\begin{tabular}{|ll|}
+	\begin{tabular}{ll}
 	\hline
 		\textbf{Parameter} & \textbf{Value}\\
 	\hline
 	\hline
-		\textbf{Resolution} & $96\times128$\\
+		\textbf{Resolution} & $3 \times 96\times128$\\
 		\textbf{Learning rate} & 0.1\\
 		\textbf{Batch size} & 4\\
-		\textbf{Color} & Yes\\
 		\textbf{Epochs} & 100\\
-		\textbf{Trainable parameters} & 6.444.578\\
-		%\textbf{Input image range} & $[-1,1]$\\
-		%\textbf{Label range} & $[0;1]$\\
-		\textbf{Execution time} & 2652s\\
+		\textbf{Trainable parameters} & 6,444,578\\
+		\textbf{Execution time} & 2,652s\\
+		\textbf{GPU} & Geforce GTX 860m\\
 	\hline
 	\end{tabular}
 	\caption{Parameters for the best color network}

@@ -1,0 +1,25 @@
+\begin{figure}[h!]
+	\scriptsize
+	\centering
+	\begin{tabular}{|c|}
+	\hline
+		\textbf{Gabor Layer}\\
+		3 input maps, 80 output maps, absolute value and phase, ReLU\\
+		filter sizes: $27 \times 27$, $31 \times 31$, $39 \times 39$, $47 \times 47$ and $55 \times 55$\\
+	\hline
+		\textbf{Convolutional Layer}\\
+		80 input maps, 32 output maps, filter size $3\times3$, Glorot normal initialization, \ac{ReLU}\\
+	\hline
+		\textbf{Fully Connected Layer}\\
+		300 neurons, Glorot normal initialization, sigmoid\\
+	\hline
+		\textbf{Fully Connected Layer}\\
+		200 neurons, Glorot normal initialization, sigmoid\\
+	\hline
+		\textbf{Output Layer}\\
+		30 neurons, Glorot normal initialization\\
+	\hline
+	\end{tabular}
+	\caption{Structure of the initial Gabor network}
+	\label{fig:gabor_structure_initial_network}
+\end{figure}
