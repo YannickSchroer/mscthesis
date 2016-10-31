@@ -13,7 +13,7 @@ draw_pred = False	# True: create images with predictions False: do not create im
 
 gabor_file = "data/gabor/gabor_filters.dat"
 data_path = "data/MUCT_fixed/muct-landmarks/MUCT_TRAIN_KAGGLE_REDUCED.csv" if training else "data/MUCT_fixed/muct-landmarks/MUCT_TEST_KAGGLE_REDUCED.csv"
-folder_name = "gabor_lr0.1_absatan2_hd_gray_noconv_cuda01"
+folder_name = "gabor_lr0.1_absatan2_hd_gray_noconv"
 weight_load_path = "weights/" + folder_name
 load_epoch = 1000
 learningrate = 0
